@@ -96,12 +96,28 @@ export default function InfoPenawaran() {
                     totalHarga: totalHarga,
                 })
                 console.log('uji 2', response.data)
-                console.log('uji 3', stok - jumlahProduk)
+                const sisaStok = stok - jumlahProduk
+                console.log('uji stok', sisaStok)
+                if (sisaStok == 0){
+                    response = await axios.put(`http://localhost:8000/v1/Produk/update/${id_produkTerjual}`, {
+                        keterangan: "out",
+                        stok: sisaStok,
+                        produkTerjual: jumlahProduk,
+                    })
+                    console.log('uji 3', response.data)
+                } else{
+                    response = await axios.put(`http://localhost:8000/v1/Produk/update/${id_produkTerjual}`, {
+                        keterangan: "sold",
+                        stok: sisaStok,
+                        produkTerjual: jumlahProduk,
+                    })
+                    console.log('uji 4', response.data)
+                }
             }
         } catch (error) {
             console.log(error)
         }
-        window.location.reload();
+        // window.location.reload();
     }
     const hubungi = () => {
         console.log("tes", nomor)
@@ -198,7 +214,7 @@ export default function InfoPenawaran() {
                                                         {data.Product.foto === null ? <img src={wa} className="rounded-circle mx-2" width="150px" height="150px" alt="userimage" /> : <img src={data.Product.foto} className="rounded mx-1 my-1" width="150px" height="150px" alt="userimage" />}
                                                     </div>
                                                     <div>
-                                                        {/* <small>{data.Status.stat}</small><br /> */}
+                                                        <small>{data.Status.stat}</small><br />
                                                         <strong>{data.Product.nama_produk}</strong>
                                                         <small>(Kategori {data.Product.Kategori.macam})</small>
                                                         <p>{formatRupiah(data.Product.harga)} x {data.jumlah} pcs</p>
@@ -540,7 +556,7 @@ export default function InfoPenawaran() {
                                                         {data.Product.foto === null ? <img src={wa} className="rounded-circle mx-2" width="150px" height="150px" alt="userimage" /> : <img src={data.Product.foto} className="rounded mx-1 my-1" width="150px" height="150px" alt="userimage" />}
                                                     </div>
                                                     <div>
-                                                        {/* <small>{data.Status.stat}</small><br /> */}
+                                                        <small>{data.Status.stat}</small><br />
                                                         <strong>{data.Product.nama_produk}</strong>
                                                         <small>(Kategori {data.Product.Kategori.macam})</small>
                                                         <p>{formatRupiah(data.Product.harga)} x {data.jumlah} pcs</p>
