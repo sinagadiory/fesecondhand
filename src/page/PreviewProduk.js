@@ -28,6 +28,7 @@ export default function PreviewProduk() {
     const [coba, setCoba] = useState("")
     const [Cek, setCek] = useState([])
     const [terakhir, setTerakhir] = useState([])
+    const [wist, setWist] = useState([])
 
     useEffect(() => {
         fetchdata()
@@ -60,6 +61,9 @@ export default function PreviewProduk() {
             const terakhir = orang.filter((user) => user.id_user == decoded.id).slice(-1)[0]
             console.log("terakhir", terakhir);
             setTerakhir((terakhir))
+            response = await axios.get(`http://localhost:8000/wishlist/${decoded.id}/${id}`)
+            console.log("sukai", response.data);
+            setWist(response.data)
         } catch (error) {
             navigasi("/")
         }
@@ -287,7 +291,23 @@ export default function PreviewProduk() {
                                                 }}>
                                                     Saya Tertarik dan Ingin Nego
                                                 </Button>
-                                                <button onClick={() => wish()} className="form-control mt-2" style={{
+                                                {wist === null ? <button onClick={() => wish()} className="form-control mt-2" style={{
+                                                    textAlign: "center",
+                                                    background: '#FFFFFF',
+                                                    color: '#151515',
+                                                    borderColor: '#7126B5',
+                                                    borderRadius: '16px',
+                                                    padding: '12px 16px',
+                                                }}>
+                                                    Tambahkan ke Wishlist
+                                                </button> : <button onClick={() => hapusWish()} className="form-control mt-2 btn-outline-danger" style={{
+                                                    textAlign: "center",
+                                                    borderRadius: '16px',
+                                                    padding: '12px 16px',
+                                                }}>
+                                                    Hapus Wishlist
+                                                </button>}
+                                                {/* <button onClick={() => wish()} className="form-control mt-2" style={{
                                                     textAlign: "center",
                                                     background: '#FFFFFF',
                                                     color: '#151515',
@@ -303,7 +323,7 @@ export default function PreviewProduk() {
                                                     padding: '12px 16px',
                                                 }}>
                                                     Hapus Wishlist
-                                                </button>
+                                                </button> */}
                                             </div>
                                         )
 

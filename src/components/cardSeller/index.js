@@ -4,10 +4,9 @@ import axios from 'axios'
 import jwt_decode from 'jwt-decode'
 import { useNavigate, Link } from 'react-router-dom'
 import { BiCube } from "react-icons/bi"
-import {AiOutlineDropbox, AiOutlineHistory} from "react-icons/ai"
+import { AiOutlineDropbox, AiOutlineHistory } from "react-icons/ai"
 import { CgDollar } from "react-icons/cg"
 import { BsSuitHeart } from "react-icons/bs"
-import { GrStatusDisabled } from "react-icons/gr"
 import { FiPlus } from "react-icons/fi";
 import Card from 'react-bootstrap/Card';
 import { GrNext } from "react-icons/gr"
@@ -62,7 +61,7 @@ export default function CardSeller() {
     const pilih = async (ket) => {
         console.log("liat ket", ket)
         const response = await axios.get(`http://localhost:8000/v1/Produk/${user.id}/${ket}`)
-        console.log("coba fungsi",response.data)
+        console.log("coba fungsi", response.data)
         setMacam(response.data)
         setJenis(ket)
     }
@@ -70,11 +69,11 @@ export default function CardSeller() {
     const history = async (ket) => {
         console.log("tes masuk hist")
         const response = await axios.get(`http://localhost:8000/api/v1/penjualan`)
-        console.log("coba fungsi",response.data)
+        console.log("coba fungsi", response.data)
         setHist(response.data)
         setJenis(ket)
     }
-console.log("tes hist", hist)
+    console.log("tes hist", hist)
     return (
         <>
             <div className='container'>
@@ -100,135 +99,135 @@ console.log("tes hist", hist)
                     <div className='col-lg-8 mb-5'>
                         <div className={styles.kiri}>
                             <div className="row" >
-                                { jenis == "all" ? 
-                                <>
-                                {products.length != 0 ? products.map((product, index) => (
-                                    <div key={index} className="col-lg-4 col-sm-6 col-6 col-md-6 mt-2">
-                                        <Card style={{ cursor: "pointer" }} onClick={() => navigasi(`/preview/produk/${product.id}`)} key={product.id}>
-                                            <Card.Img variant="top" src={product.foto} style={{ width: "100%", height: "150px" }} alt="jam" />
-                                            <Card.Body>
-                                                <Card.Title>{product.nama_produk}</Card.Title>
-                                                <Card.Text>
-                                                    <small>{product.Kategori.macam}</small><br />
-                                                    <strong>{formatRupiah(product.harga)}</strong>
-                                                </Card.Text>
-                                            </Card.Body>
-                                        </Card>
-                                    </div>
-                                )) : <div>
-                                    <h3 className='text-center py-4'>Daftar Jual Kosong</h3>
-                                    <div className='col-lg-4'><button onClick={() => navigasi("/infoproduk")} style={{ textAlign: "center" }} className={style.fotoProduk}><FiPlus className={style["plus-icon"]} />Tambah Produk
-                                    </button></div>
-                                </div>}
-                                </>
-                                : jenis == "disukai" ?
-                                <>
-                                {products.length !== 0 ? 
-                                    products.map((product, index) => (
+                                {jenis == "all" ?
                                     <>
-                                    { product.disukai >= 1 ?
-                                    <div key={index} className="col-lg-4 col-sm-6 col-6 col-md-6 mt-2">
-                                        <Card style={{ cursor: "pointer" }} onClick={() => navigasi(`/preview/produk/${product.id}`)} key={product.id}>
-                                            <Card.Img variant="top" src={product.foto} style={{ width: "100%", height: "150px" }} alt="jam" />
-                                            <Card.Body>
-                                                <Card.Title>{product.nama_produk}</Card.Title>
-                                                <Card.Text>
-                                                    <small>{product.Kategori.macam}</small><br />
-                                                    <small>Disukai {product.disukai} Pengguna</small><br />
-                                                    <p>Sisa stok : {product.stok}</p>
-                                                    <strong>{formatRupiah(product.harga)}</strong>
-                                                </Card.Text>
-                                            </Card.Body>
-                                        </Card>
-                                        
-                                        
-                                    </div>
-                                    :
-                                    <></>
-                                        }
-                                    </>
-                                )) 
-                                
-                                : 
-                                
-                                <div>
-                                    <h3 className='text-center py-4'>Belum ada produk yang diminati</h3>
-                                </div>}
-                                </>
-                                : jenis == "sold" ?
-                                <>
-                                {macam.length != 0 ? macam.map((product, index) => (
-                                    <div key={index} className="col-lg-4 col-sm-6 col-6 col-md-6 mt-2">
-                                        <Card style={{ cursor: "pointer" }} onClick={() => navigasi(`/preview/produk/${product.id}`)} key={product.id}>
-                                            <Card.Img variant="top" src={product.foto} style={{ width: "100%", height: "150px" }} alt="jam" />
-                                            <Card.Body>
-                                                <Card.Title>{product.nama_produk}</Card.Title>
-                                                <small>{product.Kategori.macam}</small>
-                                                <Card.Text>
-                                                    <p>Terjual : {product.produkTerjual} <br/> Sisa stok : {product.stok}</p>
-                                                    
-                                                    <strong>{formatRupiah(product.harga)}</strong>
-                                                </Card.Text>
-                                            </Card.Body>
-                                        </Card>
-                                    </div>
-                                )) : <div>
-                                    <h3 className='text-center py-4'>Daftar Produk Terjual Kosong</h3>
-                                </div>}
-                                </>
-                                : jenis == "disabled" ?
-                                <>
-                                {macam.length != 0 ? macam.map((product, index) => (
-                                    <div key={index} className="col-lg-4 col-sm-6 col-6 col-md-6 mt-2">
-                                        <Card disabled style={{ cursor: "pointer" }} onClick={() => navigasi(`/preview/produk/${product.id}`)} key={product.id}>
-                                            <Card.Img variant="top" src={product.foto} style={{ width: "100%", height: "150px" }} alt="jam" />
-                                            <Card.Body>
-                                                <Card.Title>{product.nama_produk}</Card.Title>
-                                                <Card.Text>
-                                                <p>Terjual : {product.produkTerjual} <br/> Sisa stok : {product.stok}</p>
-                                                    <small>{product.Kategori.macam}</small><br />
-                                                    <strong>{formatRupiah(product.harga)}</strong>
-                                                </Card.Text>
-                                            </Card.Body>
-                                        </Card>
-                                    </div>
-                                )) : <div>
-                                    <h3 className='text-center py-4'>Daftar Produk Habis Kosong</h3>
-                                </div>}
-                                </>
-                                :jenis == "riwayat" ?
-                                <>
-                                {hist.length != 0 ? hist.map((product, index) => (
-                                    <div key={index} className="col-12 mt-2">
-                                            <div className={style.atas}>
-                                                <div className='row'>
-                                                    <div className='col-3'>
-                                                        <div>
-                                                            <img src={product.User.image} className="rounded-circle mx-2" width="60px" height="60px" alt="userimage" />
-                                                        </div>
-                                                        <div>
-                                                            <strong>{product.User.nama} (Pembeli)</strong><br />
-                                                            <p>{product.User.kota}</p>
-                                                        </div>
-                                                    </div>
-                                                    <div className='col-9'>
-                                                        <div className={style.kanan} style={{ display: "flex" }}>
-                                                            <div>
-                                                                <img src={product.Product.foto} className="rounded mx-1 my-1" width="150px" height="150px" alt="userimage" />
-                                                            </div>
-                                                            <div>
-                                                                <small>{product.Penawaran.Status.stat}</small><br />
-                                                                <strong>{product.Product.nama_produk}</strong>
-                                                                <small>(Kategori {product.Product.Kategori.macam})</small>
-                                                                <p>{product.Penawaran.jumlah} pcs</p>
-                                                                <p>Harga deal : {formatRupiah(product.Penawaran.penawaranHarga)}</p>
-                                                            </div>
-                                                        </div>
-                                                        
-                                                    </div>
-                                                </div>
+                                        {products.length != 0 ? products.map((product, index) => (
+                                            <div key={index} className="col-lg-4 col-sm-6 col-6 col-md-6 mt-2">
+                                                <Card style={{ cursor: "pointer" }} onClick={() => navigasi(`/preview/produk/${product.id}`)} key={product.id}>
+                                                    <Card.Img variant="top" src={product.foto} style={{ width: "100%", height: "150px" }} alt="jam" />
+                                                    <Card.Body>
+                                                        <Card.Title>{product.nama_produk}</Card.Title>
+                                                        <Card.Text>
+                                                            <small>{product.Kategori.macam}</small><br />
+                                                            <strong>{formatRupiah(product.harga)}</strong>
+                                                        </Card.Text>
+                                                    </Card.Body>
+                                                </Card>
                                             </div>
-                                        {/* <Card style={{ cursor: "pointer" }} onClick={() => navigasi(`/preview/produk/${product.id}`)} key={product.id}>
+                                        )) : <div>
+                                            <h3 className='text-center py-4'>Daftar Jual Kosong</h3>
+                                            <div className='col-lg-4'><button onClick={() => navigasi("/infoproduk")} style={{ textAlign: "center" }} className={style.fotoProduk}><FiPlus className={style["plus-icon"]} />Tambah Produk
+                                            </button></div>
+                                        </div>}
+                                    </>
+                                    : jenis == "disukai" ?
+                                        <>
+                                            {products.length !== 0 ?
+                                                products.map((product, index) => (
+                                                    <>
+                                                        {product.disukai >= 1 ?
+                                                            <div key={index} className="col-lg-4 col-sm-6 col-6 col-md-6 mt-2">
+                                                                <Card style={{ cursor: "pointer" }} onClick={() => navigasi(`/preview/produk/${product.id}`)} key={product.id}>
+                                                                    <Card.Img variant="top" src={product.foto} style={{ width: "100%", height: "150px" }} alt="jam" />
+                                                                    <Card.Body>
+                                                                        <Card.Title>{product.nama_produk}</Card.Title>
+                                                                        <Card.Text>
+                                                                            <small>{product.Kategori.macam}</small><br />
+                                                                            <small>Disukai {product.disukai} Pengguna</small><br />
+                                                                            <p>Sisa stok : {product.stok}</p>
+                                                                            <strong>{formatRupiah(product.harga)}</strong>
+                                                                        </Card.Text>
+                                                                    </Card.Body>
+                                                                </Card>
+
+
+                                                            </div>
+                                                            :
+                                                            <></>
+                                                        }
+                                                    </>
+                                                ))
+
+                                                :
+
+                                                <div>
+                                                    <h3 className='text-center py-4'>Belum ada produk yang diminati</h3>
+                                                </div>}
+                                        </>
+                                        : jenis == "sold" ?
+                                            <>
+                                                {macam.length != 0 ? macam.map((product, index) => (
+                                                    <div key={index} className="col-lg-4 col-sm-6 col-6 col-md-6 mt-2">
+                                                        <Card style={{ cursor: "pointer" }} onClick={() => navigasi(`/preview/produk/${product.id}`)} key={product.id}>
+                                                            <Card.Img variant="top" src={product.foto} style={{ width: "100%", height: "150px" }} alt="jam" />
+                                                            <Card.Body>
+                                                                <Card.Title>{product.nama_produk}</Card.Title>
+                                                                <small>{product.Kategori.macam}</small>
+                                                                <Card.Text>
+                                                                    <p>Terjual : {product.produkTerjual} <br /> Sisa stok : {product.stok}</p>
+
+                                                                    <strong>{formatRupiah(product.harga)}</strong>
+                                                                </Card.Text>
+                                                            </Card.Body>
+                                                        </Card>
+                                                    </div>
+                                                )) : <div>
+                                                    <h3 className='text-center py-4'>Daftar Produk Terjual Kosong</h3>
+                                                </div>}
+                                            </>
+                                            : jenis == "disabled" ?
+                                                <>
+                                                    {macam.length != 0 ? macam.map((product, index) => (
+                                                        <div key={index} className="col-lg-4 col-sm-6 col-6 col-md-6 mt-2">
+                                                            <Card disabled style={{ cursor: "pointer" }} onClick={() => navigasi(`/preview/produk/${product.id}`)} key={product.id}>
+                                                                <Card.Img variant="top" src={product.foto} style={{ width: "100%", height: "150px" }} alt="jam" />
+                                                                <Card.Body>
+                                                                    <Card.Title>{product.nama_produk}</Card.Title>
+                                                                    <Card.Text>
+                                                                        <p>Terjual : {product.produkTerjual} <br /> Sisa stok : {product.stok}</p>
+                                                                        <small>{product.Kategori.macam}</small><br />
+                                                                        <strong>{formatRupiah(product.harga)}</strong>
+                                                                    </Card.Text>
+                                                                </Card.Body>
+                                                            </Card>
+                                                        </div>
+                                                    )) : <div>
+                                                        <h3 className='text-center py-4'>Daftar Produk Habis Kosong</h3>
+                                                    </div>}
+                                                </>
+                                                : jenis == "riwayat" ?
+                                                    <>
+                                                        {hist.length != 0 ? hist.map((product, index) => (
+                                                            <div key={index} className="col-12 mt-2">
+                                                                <div className={style.atas}>
+                                                                    <div className='row'>
+                                                                        <div className='col-3'>
+                                                                            <div>
+                                                                                <img src={product.User.image} className="rounded-circle mx-2" width="60px" height="60px" alt="userimage" />
+                                                                            </div>
+                                                                            <div>
+                                                                                <strong>{product.User.nama} (Pembeli)</strong><br />
+                                                                                <p>{product.User.kota}</p>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div className='col-9'>
+                                                                            <div className={style.kanan} style={{ display: "flex" }}>
+                                                                                <div>
+                                                                                    <img src={product.Product.foto} className="rounded mx-1 my-1" width="150px" height="150px" alt="userimage" />
+                                                                                </div>
+                                                                                <div>
+                                                                                    <small>{product.Penawaran.Status.stat}</small><br />
+                                                                                    <strong>{product.Product.nama_produk}</strong>
+                                                                                    <small>(Kategori {product.Product.Kategori.macam})</small>
+                                                                                    <p>{product.Penawaran.jumlah} pcs</p>
+                                                                                    <p>Harga deal : {formatRupiah(product.Penawaran.penawaranHarga)}</p>
+                                                                                </div>
+                                                                            </div>
+
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                {/* <Card style={{ cursor: "pointer" }} onClick={() => navigasi(`/preview/produk/${product.id}`)} key={product.id}>
                                             <Card.Img variant="top" src={product.foto} style={{ width: "100%", height: "150px" }} alt="jam" />
                                             <Card.Body>
                                                 <Card.Title>{product.nama_produk}</Card.Title>
@@ -238,16 +237,16 @@ console.log("tes hist", hist)
                                                 </Card.Text>
                                             </Card.Body>
                                         </Card> */}
-                                        <hr/>
-                                    </div>
-                                )) : <div>
-                                    <h3 className='text-center py-4'>Daftar Produk Habis Kosong</h3>
-                                </div>}
-                                </>
-                                :
-                                <div>
-                                    <h3 className='text-center py-4'>Data Kosong</h3>
-                                </div>
+                                                                <hr />
+                                                            </div>
+                                                        )) : <div>
+                                                            <h3 className='text-center py-4'>Daftar Produk Habis Kosong</h3>
+                                                        </div>}
+                                                    </>
+                                                    :
+                                                    <div>
+                                                        <h3 className='text-center py-4'>Data Kosong</h3>
+                                                    </div>
                                 }
 
                                 {/* <div className='col-lg-4 col-sm-12 col-md-6 mt-2'><button onClick={() => navigasi("/infoproduk")} style={{ textAlign: "center" }} className={style.fotoProduk}><FiPlus className={style["plus-icon"]} />Tambah Produk
