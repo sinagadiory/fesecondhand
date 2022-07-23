@@ -58,7 +58,12 @@ export default function CardProduk({ user }) {
 
     const kategori = async (id) => {
         let response = await axios.get(`http://localhost:8000/v1/Produk/kategori/${id}`);
+        let data = []
+        data = data.push(response.data)
+        console.log(data);
+        // data.map((dat) => { console.log("data", dat) })
         setProduk(response.data)
+        console.log("ini datanya", response.data)
         SetBenar(1)
         setAngka(id)
         if (benar !== 2) {

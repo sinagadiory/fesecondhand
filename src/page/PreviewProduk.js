@@ -162,18 +162,18 @@ export default function PreviewProduk() {
 
     const wish = async () => {
         try {
-            let response = await axios.post(`http://localhost:8000/api/v1/wishlist/add`,{
-                id_user : user.id,
-                id_produk : produk.id,
-                diminati : "yes"
+            let response = await axios.post(`http://localhost:8000/api/v1/wishlist/add`, {
+                id_user: user.id,
+                id_produk: produk.id,
+                diminati: "yes"
             })
-            console.log("add",response.data)
+            console.log("add", response.data)
             response = await axios.put(`http://localhost:8000/v1/Produk/update/${produk.id}`, {
-                disukai: produk.disukai+1
+                disukai: produk.disukai + 1
             })
-            console.log("+",response.data)
+            console.log("+", response.data)
         } catch (error) {
-            
+
         }
         window.location.reload();
     }
@@ -183,11 +183,11 @@ export default function PreviewProduk() {
             let response = await axios.delete(`http://localhost:8000/delete/${user.id}/${produk.id}`)
             console.log("hapus", response.data)
             response = await axios.put(`http://localhost:8000/v1/Produk/update/${produk.id}`, {
-                disukai: produk.disukai-1
+                disukai: produk.disukai - 1
             })
             console.log("-", response.data)
         } catch (error) {
-            
+
         }
         window.location.reload();
     }
@@ -266,48 +266,47 @@ export default function PreviewProduk() {
                                             padding: '12px 16px',
                                         }}>
                                             Saya Tertarik dan Ingin Nego
-                                        </Button> 
-                                        : 
-                                        <Button type="button" style={{
-                                            background: '#D0D0D0',
-                                            borderColor: '#D0D0D0',
-                                            borderRadius: '16px',
-                                            padding: '12px 16px',
-                                        }} class="btn form-control mt-2" disabled data-bs-toggle="button">
-                                        {terakhir.id_status === 3 ? "Menunggu respon penjual" : "Negosiasi..."}
-                                        </Button>) 
-                                        
-                                        :
-                                        <div>
-
-                                        <Button className="form-control mt-2" data-bs-toggle="modal" data-bs-target="#staticBackdrop" style={{
-                                            background: '#7126B5',
-                                            borderColor: '#7126B5',
-                                            borderRadius: '16px',
-                                            padding: '12px 16px',
-                                        }}>
-                                            Saya Tertarik dan Ingin Nego
                                         </Button>
-                                        <button onClick={() => wish()} className="form-control mt-2" style={{
-                                                textAlign: "center",
-                                                background: '#FFFFFF',
-                                                color: '#151515',
-                                                borderColor: '#7126B5',
+                                            :
+                                            <Button type="button" style={{
+                                                background: '#D0D0D0',
+                                                borderColor: '#D0D0D0',
                                                 borderRadius: '16px',
                                                 padding: '12px 16px',
-                                            }}>
-                                                Tambahkan ke Wishlist
-                                            </button>
-                                        <button onClick={() => hapusWish()} className="form-control mt-2 btn-outline-danger" style={{
-                                                textAlign: "center",
-                                                borderRadius: '16px',
-                                                padding: '12px 16px',
-                                            }}>
-                                                Hapus Wishlist
-                                            </button>
-                                        </div>
+                                            }} className="form-control mt-2" disabled data-bs-toggle="button">
+                                                {terakhir.id_status === 3 ? "Menunggu respon penjual" : "Negosiasi..."}
+                                            </Button>)
+
+                                            :
+                                            <div>
+                                                <Button className="form-control mt-2" data-bs-toggle="modal" data-bs-target="#staticBackdrop" style={{
+                                                    background: '#7126B5',
+                                                    borderColor: '#7126B5',
+                                                    borderRadius: '16px',
+                                                    padding: '12px 16px',
+                                                }}>
+                                                    Saya Tertarik dan Ingin Nego
+                                                </Button>
+                                                <button onClick={() => wish()} className="form-control mt-2" style={{
+                                                    textAlign: "center",
+                                                    background: '#FFFFFF',
+                                                    color: '#151515',
+                                                    borderColor: '#7126B5',
+                                                    borderRadius: '16px',
+                                                    padding: '12px 16px',
+                                                }}>
+                                                    Tambahkan ke Wishlist
+                                                </button>
+                                                <button onClick={() => hapusWish()} className="form-control mt-2 btn-outline-danger" style={{
+                                                    textAlign: "center",
+                                                    borderRadius: '16px',
+                                                    padding: '12px 16px',
+                                                }}>
+                                                    Hapus Wishlist
+                                                </button>
+                                            </div>
                                         )
-                                        
+
                                         : <div>
                                             <Button onClick={() => navigasi(`/update/produk/${id}`)} className="form-control mt-2" style={{
                                                 background: '#7126B5',
@@ -317,13 +316,13 @@ export default function PreviewProduk() {
                                             }}>
                                                 Update Produk
                                             </Button>
-                                            <button onClick={() => deleteProduk(id)} className="form-control mt-2 btn-outline-danger" style={{
+                                            {/* <button onClick={() => deleteProduk(id)} className="form-control mt-2 btn-outline-danger" style={{
                                                 borderRadius: '16px',
                                                 padding: '12px 16px',
                                                 textAlign: "center"
                                             }}>
                                                 Delete Produk
-                                            </button>
+                                            </button> */}
                                         </div>}
                                     <div className="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                                         <div className="modal-dialog modal-dialog-centered">
