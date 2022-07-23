@@ -23,14 +23,14 @@ export default function CardSeller() {
 
     const fetchdata = async () => {
         try {
-            let response = await axios.get("http://localhost:8000/token", {
+            let response = await axios.get("https://secondhandkel4.herokuapp.com/token", {
                 withCredentials: true
             })
             const decoded = jwt_decode(response.data.accessToken)
-            response = await fetch(`http://localhost:8000/user/${decoded.id}`)
+            response = await fetch(`https://secondhandkel4.herokuapp.com/user/${decoded.id}`)
             const data = await response.json()
             SetUser(data)
-            response = await axios.get(`http://localhost:8000/v1/Produk/${decoded.id}`)
+            response = await axios.get(`https://secondhandkel4.herokuapp.com/v1/Produk/${decoded.id}`)
             setProducts(response.data);
             console.log(response.data)
         } catch (error) {
@@ -38,7 +38,7 @@ export default function CardSeller() {
         }
     }
     const ada = async () => {
-        await fetch(`http://localhost:8000/user/${user.id}`)
+        await fetch(`https://secondhandkel4.herokuapp.com/user/${user.id}`)
     }
     useEffect(() => {
         if (!ada) {
@@ -60,7 +60,7 @@ export default function CardSeller() {
 
     const pilih = async (ket) => {
         console.log("liat ket", ket)
-        const response = await axios.get(`http://localhost:8000/v1/Produk/${user.id}/${ket}`)
+        const response = await axios.get(`https://secondhandkel4.herokuapp.com/v1/Produk/${user.id}/${ket}`)
         console.log("coba fungsi", response.data)
         setMacam(response.data)
         setJenis(ket)
@@ -68,7 +68,7 @@ export default function CardSeller() {
 
     const history = async (ket) => {
         console.log("tes masuk hist")
-        const response = await axios.get(`http://localhost:8000/api/v1/penjualan`)
+        const response = await axios.get(`https://secondhandkel4.herokuapp.com/api/v1/penjualan`)
         console.log("coba fungsi", response.data)
         setHist(response.data)
         setJenis(ket)
