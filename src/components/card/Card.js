@@ -33,11 +33,9 @@ export default function CardProduk({ user }) {
         let response = await axios.get("http://localhost:8000/v1/Produk");
         setProduct(response.data);
         setAngka(0)
-        // response = await axios.get("http://localhost:8000/v1/Produk/add/form")
     };
 
     const klik = (jumlah) => {
-        // toast.loading('Waiting...', { duration: 5000 });
         let content = null
         if (jumlah !== 0) {
             content = <strong>Ditemukan {jumlah} produk</strong>
@@ -46,7 +44,6 @@ export default function CardProduk({ user }) {
         }
         toast(content, {
             duration: 1000,
-            // Styling
             style: { background: 'rgb(113, 38, 181)', color: 'white', padding: "18px" },
             className: '',
             ariaProps: {
@@ -61,7 +58,6 @@ export default function CardProduk({ user }) {
         let data = []
         data = data.push(response.data)
         console.log(data);
-        // data.map((dat) => { console.log("data", dat) })
         setProduk(response.data)
         console.log("ini datanya", response.data)
         SetBenar(1)
@@ -175,11 +171,6 @@ export default function CardProduk({ user }) {
                 <h4 className='mb-3'>Telesuri Kategori</h4>
                 <div className='d-flex' style={{ flexWrap: "wrap" }}>
                     <Button className='mx-2 mb-2' onClick={() => SetBenar(0)} style={{ background: "#7126B5", borderColor: "#7126B5", borderRadius: "10px" }}><BsSearch /> Semua </Button>
-                    {/* <Button className='mx-2 mb-2' onClick={() => kategori(1)} style={{ background: "#E2D4F0", borderColor: "#E2D4F0", color: "black", borderRadius: "10px" }}><BsSearch /> Sepatu</Button>
-                    <Button className='mx-2 mb-2' onClick={() => kategori(2)} style={{ background: "#E2D4F0", borderColor: "#E2D4F0", color: "black", borderRadius: "10px" }}><BsSearch /> Kendaraan</Button>
-                    <Button className='mx-2 mb-2' onClick={() => kategori(3)} style={{ background: "#E2D4F0", borderColor: "#E2D4F0", color: "black", borderRadius: "10px" }}><BsSearch /> Elektronik</Button>
-                    <Button className='mx-2 mb-2' onClick={() => kategori(4)} style={{ background: "#E2D4F0", borderColor: "#E2D4F0", color: "black", borderRadius: "10px" }}><BsSearch /> Baju</Button>
-                    <Button className='mx-2 mb-2' onClick={() => kategori(5)} style={{ background: "#E2D4F0", borderColor: "#E2D4F0", color: "black", borderRadius: "10px" }}><BsSearch /> Celena</Button> */}
                     {Kategori.map((kat) => (
                         <Button className='mx-2 mb-2' onClick={() => kategori(kat.id)} style={{ background: "#E2D4F0", borderColor: "#E2D4F0", color: "black", borderRadius: "10px" }}><BsSearch />{kat.macam}</Button>
                     ))}
@@ -210,10 +201,6 @@ export default function CardProduk({ user }) {
                     </div>
                 </div>
             </div>
-            {/* {console.log("benar", benar)}
-            {console.log(filter)}
-            {console.log("angka", angka)} */}
-            {/* {console.log(user)} */}
             {benar === 0 ? <div className="row" >
                 {products.map((product, index) => (
                     <div key={index} className="col-lg-2 col-sm-6 col-6 col-md-6 mt-2">

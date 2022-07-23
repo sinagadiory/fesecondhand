@@ -1,9 +1,5 @@
-// import "./styles/style.css";
 import jwt_decode from 'jwt-decode';
 import "bootstrap/dist/css/bootstrap.min.css";
-import Modal from "react-bootstrap/Modal";
-import Form from "react-bootstrap/Form";
-import { Link, Linking } from "react-router-dom";
 import { BsListUl, BsPerson } from 'react-icons/bs';
 import toast, { Toaster } from 'react-hot-toast';
 import Nav from "../components/Nav";
@@ -15,7 +11,6 @@ import React, { useState, useEffect, Fragment } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { data } from 'autoprefixer';
-// import { View, StyleSheet, Linking} from 'react-native';
 
 export default function InfoPenawaran() {
     const [token, SetToken] = useState('');
@@ -35,14 +30,12 @@ export default function InfoPenawaran() {
     const [status, setStatus] = useState("");
     const [id_produkTerjual, setId_produkTerjual] = useState("");
     const [id_pembeli, setId_pembeli] = useState("");
+    const [id_penjual, setId_penjual] = useState("");
     const [jumlahProduk, setJumlahProduk] = useState("");
     const [totalHarga, setTotalHarga] = useState("");
     const [stok, setStok] = useState("");
 
 
-
-    //   const  now = new Date().toLocaleTimeString();
-    // console.log(now)
 
     useEffect(() => {
         fetchdata();
@@ -90,6 +83,7 @@ export default function InfoPenawaran() {
             if (status == 1) {
                 response = await axios.post(`http://localhost:8000/api/v1/penjualan`, {
                     id_pembeli: id_pembeli,
+                    id_penjual: id_penjual,
                     id_status: status,
                     id_produk: id_produkTerjual,
                     id_penawaran: id_penawaran,
@@ -295,6 +289,7 @@ export default function InfoPenawaran() {
                                                                                             setJumlahProduk(data.jumlah);
                                                                                             setTotalHarga(data.penawaranHarga);
                                                                                             setStok(data.Product.stok);
+                                                                                            setId_penjual(data.Product.id_penjual);
                                                                                         }} className="btn form-control mt-2" style={{
                                                                                             background: '#7126B5',
                                                                                             borderColor: '#7126B5',

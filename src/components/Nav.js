@@ -21,10 +21,6 @@ export default function Nav(props) {
                             {contentUser}
                         </Navbar.Brand>
                     </Link>
-                    {/* <Navbar.Brand style={{ cursor: "pointer" }} onClick={() => navigasi("/home")}>
-                        {contentUser}
-                    </Navbar.Brand> */}
-                    {/* {contentUser} */}
                     <Col sm="4" md="5" lg="7" className='my-3'>
                         {content}
                     </Col>
