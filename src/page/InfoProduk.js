@@ -25,7 +25,8 @@ export default function InfoProduk() {
     const [file, setFile] = useState(null);
     const [token, SetToken] = useState('');
     const [user, SetUser] = useState('');
-    const [id_penjual, SetId_penjual] = useState("0")
+    const [produkTerjual, setProdukTerjual] = useState("0")
+    const [disukai, setDisukai] = useState("0")
     const [id_kategori, SetId_kategori] = useState("")
     const [nama_produk, SetNama_produk] = useState("")
     const [harga, SetHarga] = useState("")
@@ -125,7 +126,9 @@ export default function InfoProduk() {
                     harga: harga,
                     stok: stok,
                     deskripsi: deskripsi,
-                    foto: response.data.url
+                    foto: response.data.url,
+                    produkTerjual: produkTerjual,
+                    disukai: disukai
                 })
                 await axios.post("http://localhost:8000/v1/Produk/email")
                 berhasil()
@@ -134,12 +137,14 @@ export default function InfoProduk() {
                 // navigasi("/home");npm ru
             } else {
                 await axios.post("http://localhost:8000/v1/Produk/add", {
-                    id_penjual: id_penjual,
+                    id_penjual: user.id,
                     id_kategori: id_kategori,
                     nama_produk: nama_produk,
                     harga: harga,
                     stok: stok,
                     deskripsi: deskripsi,
+                    produkTerjual: produkTerjual,
+                    disukai: disukai
                 })
                 // navigasi("/home");
                 berhasil()

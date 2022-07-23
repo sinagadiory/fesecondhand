@@ -19,6 +19,7 @@ export default function CardSeller() {
     const navigasi = useNavigate()
     const [products, setProducts] = useState([])
     const [macam, setMacam] = useState([])
+    const [hist, setHist] = useState([])
     const [jenis, setJenis] = useState("all")
 
     const fetchdata = async () => {
@@ -66,6 +67,14 @@ export default function CardSeller() {
         setJenis(ket)
     }
 
+    const history = async (ket) => {
+        console.log("tes masuk hist")
+        const response = await axios.get(`http://localhost:8000/api/v1/penjualan`)
+        console.log("coba fungsi",response.data)
+        setHist(response.data)
+        setJenis(ket)
+    }
+console.log("tes hist", hist)
     return (
         <>
             <div className='container'>
@@ -82,11 +91,10 @@ export default function CardSeller() {
                         <div className={styles.kiri}>
                             <h5 className='mb-4'>Kategori</h5>
                             <a className={styles.hover} onClick={() => setJenis("all")}><BiCube style={{ height: "23px", width: "23px" }} /> Semua Produk <GrNext style={{ float: "right" }} /></a><hr />
-                            <a className={styles.hover} onClick={() => setJenis(2)}><BsSuitHeart style={{ height: "23px", width: "23px" }} /> Diminati <GrNext style={{ float: "right" }} /> </a><hr />
+                            <a className={styles.hover} onClick={() => setJenis("disukai")}><BsSuitHeart style={{ height: "23px", width: "23px" }} /> Diminati <GrNext style={{ float: "right" }} /> </a><hr />
                             <a className={styles.hover} onClick={() => pilih("sold")}><CgDollar style={{ height: "23px", width: "23px" }} /> Terjual <GrNext style={{ float: "right" }} /></a><hr />
-                            <a className={styles.hover} onClick={() => pilih("out")}><AiOutlineDropbox style={{ height: "23px", width: "23px" }} /> Habis <GrNext style={{ float: "right" }} /></a><hr />
-                            <a className={styles.hover} onClick={() => pilih("disabled")}><GrStatusDisabled style={{ height: "23px", width: "23px" }} /> NonAktif <GrNext style={{ float: "right" }} /></a><hr />
-                            <a className={styles.hover} onClick={() => setJenis("disabled")}><AiOutlineHistory style={{ height: "23px", width: "23px" }} /> History Penjualan <GrNext style={{ float: "right" }} /></a>
+                            <a className={styles.hover} onClick={() => pilih("disabled")}><AiOutlineDropbox style={{ height: "23px", width: "23px" }} /> Habis <GrNext style={{ float: "right" }} /></a><hr />
+                            <a className={styles.hover} onClick={() => history("riwayat")}><AiOutlineHistory style={{ height: "23px", width: "23px" }} /> History Penjualan <GrNext style={{ float: "right" }} /></a>
                         </div>
                     </div>
                     <div className='col-lg-8 mb-5'>
@@ -113,9 +121,12 @@ export default function CardSeller() {
                                     </button></div>
                                 </div>}
                                 </>
-                                : jenis == "wishlist" ?
+                                : jenis == "disukai" ?
                                 <>
-                                {products.length != 0 ? products.map((product, index) => (
+                                {products.length !== 0 ? 
+                                    products.map((product, index) => (
+                                    <>
+                                    { product.disukai >= 1 ?
                                     <div key={index} className="col-lg-4 col-sm-6 col-6 col-md-6 mt-2">
                                         <Card style={{ cursor: "pointer" }} onClick={() => navigasi(`/preview/produk/${product.id}`)} key={product.id}>
                                             <Card.Img variant="top" src={product.foto} style={{ width: "100%", height: "150px" }} alt="jam" />
@@ -123,15 +134,25 @@ export default function CardSeller() {
                                                 <Card.Title>{product.nama_produk}</Card.Title>
                                                 <Card.Text>
                                                     <small>{product.Kategori.macam}</small><br />
+                                                    <small>Disukai {product.disukai} Pengguna</small><br />
+                                                    <p>Sisa stok : {product.stok}</p>
                                                     <strong>{formatRupiah(product.harga)}</strong>
                                                 </Card.Text>
                                             </Card.Body>
                                         </Card>
+                                        
+                                        
                                     </div>
-                                )) : <div>
-                                    <h3 className='text-center py-4'>Daftar Jual Kosong</h3>
-                                    <div className='col-lg-4'><button onClick={() => navigasi("/infoproduk")} style={{ textAlign: "center" }} className={style.fotoProduk}><FiPlus className={style["plus-icon"]} />Tambah Produk
-                                    </button></div>
+                                    :
+                                    <></>
+                                        }
+                                    </>
+                                )) 
+                                
+                                : 
+                                
+                                <div>
+                                    <h3 className='text-center py-4'>Belum ada produk yang diminati</h3>
                                 </div>}
                                 </>
                                 : jenis == "sold" ?
@@ -142,9 +163,10 @@ export default function CardSeller() {
                                             <Card.Img variant="top" src={product.foto} style={{ width: "100%", height: "150px" }} alt="jam" />
                                             <Card.Body>
                                                 <Card.Title>{product.nama_produk}</Card.Title>
+                                                <small>{product.Kategori.macam}</small>
                                                 <Card.Text>
-                                                    <p>{product.keterangan}</p>
-                                                    <small>{product.Kategori.macam}</small><br />
+                                                    <p>Terjual : {product.produkTerjual} <br/> Sisa stok : {product.stok}</p>
+                                                    
                                                     <strong>{formatRupiah(product.harga)}</strong>
                                                 </Card.Text>
                                             </Card.Body>
@@ -154,15 +176,16 @@ export default function CardSeller() {
                                     <h3 className='text-center py-4'>Daftar Produk Terjual Kosong</h3>
                                 </div>}
                                 </>
-                                : jenis == "habis" ?
+                                : jenis == "disabled" ?
                                 <>
                                 {macam.length != 0 ? macam.map((product, index) => (
                                     <div key={index} className="col-lg-4 col-sm-6 col-6 col-md-6 mt-2">
-                                        <Card style={{ cursor: "pointer" }} onClick={() => navigasi(`/preview/produk/${product.id}`)} key={product.id}>
+                                        <Card disabled style={{ cursor: "pointer" }} onClick={() => navigasi(`/preview/produk/${product.id}`)} key={product.id}>
                                             <Card.Img variant="top" src={product.foto} style={{ width: "100%", height: "150px" }} alt="jam" />
                                             <Card.Body>
                                                 <Card.Title>{product.nama_produk}</Card.Title>
                                                 <Card.Text>
+                                                <p>Terjual : {product.produkTerjual} <br/> Sisa stok : {product.stok}</p>
                                                     <small>{product.Kategori.macam}</small><br />
                                                     <strong>{formatRupiah(product.harga)}</strong>
                                                 </Card.Text>
@@ -173,11 +196,39 @@ export default function CardSeller() {
                                     <h3 className='text-center py-4'>Daftar Produk Habis Kosong</h3>
                                 </div>}
                                 </>
-                                : jenis == "NonAktif" ?
+                                :jenis == "riwayat" ?
                                 <>
-                                {macam.length != 0 ? macam.map((product, index) => (
-                                    <div key={index} className="col-lg-4 col-sm-6 col-6 col-md-6 mt-2">
-                                        <Card style={{ cursor: "pointer" }} onClick={() => navigasi(`/preview/produk/${product.id}`)} key={product.id}>
+                                {hist.length != 0 ? hist.map((product, index) => (
+                                    <div key={index} className="col-12 mt-2">
+                                            <div className={style.atas}>
+                                                <div className='row'>
+                                                    <div className='col-3'>
+                                                        <div>
+                                                            <img src={product.User.image} className="rounded-circle mx-2" width="60px" height="60px" alt="userimage" />
+                                                        </div>
+                                                        <div>
+                                                            <strong>{product.User.nama} (Pembeli)</strong><br />
+                                                            <p>{product.User.kota}</p>
+                                                        </div>
+                                                    </div>
+                                                    <div className='col-9'>
+                                                        <div className={style.kanan} style={{ display: "flex" }}>
+                                                            <div>
+                                                                <img src={product.Product.foto} className="rounded mx-1 my-1" width="150px" height="150px" alt="userimage" />
+                                                            </div>
+                                                            <div>
+                                                                <small>{product.Penawaran.Status.stat}</small><br />
+                                                                <strong>{product.Product.nama_produk}</strong>
+                                                                <small>(Kategori {product.Product.Kategori.macam})</small>
+                                                                <p>{product.Penawaran.jumlah} pcs</p>
+                                                                <p>Harga deal : {formatRupiah(product.Penawaran.penawaranHarga)}</p>
+                                                            </div>
+                                                        </div>
+                                                        
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        {/* <Card style={{ cursor: "pointer" }} onClick={() => navigasi(`/preview/produk/${product.id}`)} key={product.id}>
                                             <Card.Img variant="top" src={product.foto} style={{ width: "100%", height: "150px" }} alt="jam" />
                                             <Card.Body>
                                                 <Card.Title>{product.nama_produk}</Card.Title>
@@ -186,12 +237,12 @@ export default function CardSeller() {
                                                     <strong>{formatRupiah(product.harga)}</strong>
                                                 </Card.Text>
                                             </Card.Body>
-                                        </Card>
+                                        </Card> */}
+                                        <hr/>
                                     </div>
                                 )) : <div>
-                                    <h3 className='text-center py-4'>Daftar Produk NonAktif Kosong</h3>
+                                    <h3 className='text-center py-4'>Daftar Produk Habis Kosong</h3>
                                 </div>}
-
                                 </>
                                 :
                                 <div>

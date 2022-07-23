@@ -73,9 +73,11 @@ export default function UpdateProduk() {
     const [id_kategori, SetId_kategori] = useState(Products.id_kategori)
     const [nama_produk, SetNama_produk] = useState(Products.nama_produk)
     const [harga, SetHarga] = useState(Products.harga)
+    const [stokLama, SetStokLama] = useState(Products.stok)
     const [stok, SetStok] = useState(Products.stok)
     const [deskripsi, SetDeskripsi] = useState(Products.deskripsi)
     const [foto, SetFoto] = useState(Products.foto)
+    const [keterangan, SetKeterangan] = useState(Products.keterangan)
 
 
     const berhasil = () => {
@@ -112,24 +114,33 @@ export default function UpdateProduk() {
         }).format(money);
     };
 
+    console.log("coba", Products.stok, "dan", Products.keterangan)
+
     function sleep(ms) {
         return new Promise(resolve => setTimeout(resolve, ms));
     }
-    if (nama_produk === "" || deskripsi === "" || harga === "" || stok === "" || id_kategori === "Pilih Kategori") {
-        window.location.reload()
-    }
+    // if (nama_produk === "" || deskripsi === "" || harga === "" || stok === "" || id_kategori === "Pilih Kategori") {
+    //     window.location.reload()
+    // }
 
     const updateProduct = async (e) => {
         e.preventDefault();
         const form = new FormData();
 
         form.append("image", file);
-
+        console.log("tes masuk")
         try {
             if (user.kota == null || user.alamat == null || user.nomor_hp == null || user.image == null) {
                 setmsg("Lengkapi Profil Dulu!!")
                 SetLink(user.id)
                 gagal("Lengkapi Profil Terlebih Dahulu")
+                return
+            }
+
+            if(stok == 0 ){
+                setmsg("Lengkapi stok dengan benar!!")
+                SetLink(user.id)
+                gagal("Lengkapi stok dengan benar")
                 return
             }
 
@@ -144,21 +155,37 @@ export default function UpdateProduk() {
 
                 );
                 SetFoto(response.data.url)
-                response = await axios.put(`http://localhost:8000/v1/Produk/update/${id}`, {
-                    id_penjual: id_penjual,
-                    id_kategori: id_kategori,
-                    nama_produk: nama_produk,
-                    harga: harga,
-                    stok: stok,
-                    deskripsi: deskripsi,
-                    foto: response.data.url
-                })
+                if(Products.stok == 0 && Products.keterangan == "disabled"){
+                    console.log("coba", Products.stok, "dan", Products.keterangan)
+                    response = await axios.put(`http://localhost:8000/v1/Produk/update/${id}`, {
+                        id_penjual: id_penjual,
+                        id_kategori: id_kategori,
+                        nama_produk: nama_produk,
+                        harga: harga,
+                        stok: stok,
+                        deskripsi: deskripsi,
+                        foto: response.data.url,
+                        keterangan: "sold"
+                    })
+                } else {
+                    response = await axios.put(`http://localhost:8000/v1/Produk/update/${id}`, {
+                        id_penjual: id_penjual,
+                        id_kategori: id_kategori,
+                        nama_produk: nama_produk,
+                        harga: harga,
+                        stok: stok,
+                        deskripsi: deskripsi,
+                        foto: response.data.url
+                    })
+                }
                 // response = await axios.post("http://localhost:8000/v1/Produk/email")
                 // navigasi("/home");
                 berhasil()
                 await sleep(3 * 1000)
                 navigasi(`/preview/produk/${id}`)
             } else {
+                if(Products.stok == 0 && Products.keterangan == "disabled"){
+                    console.log("coba", Products.stok, "dan", Products.keterangan)
                 await axios.put(`http://localhost:8000/v1/Produk/update/${id}`, {
                     id_penjual: id_penjual,
                     id_kategori: id_kategori,
@@ -166,7 +193,18 @@ export default function UpdateProduk() {
                     harga: harga,
                     stok: stok,
                     deskripsi: deskripsi,
+                    keterangan: "sold"
                 })
+                } else {
+                    await axios.put(`http://localhost:8000/v1/Produk/update/${id}`, {
+                        id_penjual: id_penjual,
+                        id_kategori: id_kategori,
+                        nama_produk: nama_produk,
+                        harga: harga,
+                        stok: stok,
+                        deskripsi: deskripsi,
+                    })
+                }
                 // navigasi("/home");
                 berhasil()
                 await sleep(3 * 1000)
@@ -206,7 +244,8 @@ export default function UpdateProduk() {
                                     border: '1px solid #D0D0D0',
                                     borderRadius: '16px',
                                     padding: '12px 16px',
-                                }} type="text" placeholder={Products.nama_produk} className="form-control" value={nama_produk} onChange={(e) => SetNama_produk(e.target.value)} /></Col>
+                                }} type="text" placeholder={Products.nama_produk} className="form-control" value={nama_produk} onChange={(e) => SetNama_produk(e.target.value)} />
+                                </Col>
                         </Form.Group> {console.log("nama_produk", nama_produk, stok, id_kategori)}
                         <Form.Group className="mb-3" >
                             <Col md="9" lg="7" sm="7" style={{ marginRight: " auto", marginLeft: " auto" }}>

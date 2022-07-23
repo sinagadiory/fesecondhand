@@ -21,6 +21,7 @@ export default function PreviewProduk() {
     const { id } = useParams()
     const [kategori, setKategori] = useState([])
     const [penjual, setPenjual] = useState([])
+    const [produk, setProduk] = useState([])
     const [keterangan, setKeterangan] = useState("")
     const [msg, setmsg] = useState("")
     const [link, SetLink] = useState("")
@@ -45,6 +46,7 @@ export default function PreviewProduk() {
             // response = await axios.get(`http://localhost:8000/v1/Produk/preview/${id}`)
             response = await axios.get(`http://localhost:8000/v1/Produk/preview/${id}`)
             // console.log(response.data.Kategori.macam)
+            setProduk(response.data)
             setKategori(response.data.Kategori)
             setPenjual(response.data.User)
             // console.log(response.data);
@@ -70,6 +72,9 @@ export default function PreviewProduk() {
             minimumFractionDigits: 0,
         }).format(money);
     };
+
+    // console.log("user", user)
+    // console.log("produk", produk)
 
     // const CekNawar = () => {
     //     for (tawar of Cek) {
@@ -155,6 +160,38 @@ export default function PreviewProduk() {
         }
     }
 
+    const wish = async () => {
+        try {
+            let response = await axios.post(`http://localhost:8000/api/v1/wishlist/add`,{
+                id_user : user.id,
+                id_produk : produk.id,
+                diminati : "yes"
+            })
+            console.log("add",response.data)
+            response = await axios.put(`http://localhost:8000/v1/Produk/update/${produk.id}`, {
+                disukai: produk.disukai+1
+            })
+            console.log("+",response.data)
+        } catch (error) {
+            
+        }
+        window.location.reload();
+    }
+
+    const hapusWish = async () => {
+        try {
+            let response = await axios.delete(`http://localhost:8000/delete/${user.id}/${produk.id}`)
+            console.log("hapus", response.data)
+            response = await axios.put(`http://localhost:8000/v1/Produk/update/${produk.id}`, {
+                disukai: produk.disukai-1
+            })
+            console.log("-", response.data)
+        } catch (error) {
+            
+        }
+        window.location.reload();
+    }
+
     const handleChange = (e) => {
         e.preventDefault();
         const { value = "" } = e.target;
@@ -229,19 +266,49 @@ export default function PreviewProduk() {
                                             padding: '12px 16px',
                                         }}>
                                             Saya Tertarik dan Ingin Nego
-                                        </Button> : <button type="button" style={{
+                                        </Button> 
+                                        : 
+                                        <Button type="button" style={{
                                             background: '#D0D0D0',
                                             borderColor: '#D0D0D0',
                                             borderRadius: '16px',
                                             padding: '12px 16px',
-                                        }} class="btn form-control mt-2" disabled data-bs-toggle="button">{terakhir.id_status === 3 ? "Menunggu respon penjual" : "Negosiasi..."}</button>) : <Button className="form-control mt-2" data-bs-toggle="modal" data-bs-target="#staticBackdrop" style={{
+                                        }} class="btn form-control mt-2" disabled data-bs-toggle="button">
+                                        {terakhir.id_status === 3 ? "Menunggu respon penjual" : "Negosiasi..."}
+                                        </Button>) 
+                                        
+                                        :
+                                        <div>
+
+                                        <Button className="form-control mt-2" data-bs-toggle="modal" data-bs-target="#staticBackdrop" style={{
                                             background: '#7126B5',
                                             borderColor: '#7126B5',
                                             borderRadius: '16px',
                                             padding: '12px 16px',
                                         }}>
                                             Saya Tertarik dan Ingin Nego
-                                        </Button>) : <div>
+                                        </Button>
+                                        <button onClick={() => wish()} className="form-control mt-2" style={{
+                                                textAlign: "center",
+                                                background: '#FFFFFF',
+                                                color: '#151515',
+                                                borderColor: '#7126B5',
+                                                borderRadius: '16px',
+                                                padding: '12px 16px',
+                                            }}>
+                                                Tambahkan ke Wishlist
+                                            </button>
+                                        <button onClick={() => hapusWish()} className="form-control mt-2 btn-outline-danger" style={{
+                                                textAlign: "center",
+                                                borderRadius: '16px',
+                                                padding: '12px 16px',
+                                            }}>
+                                                Hapus Wishlist
+                                            </button>
+                                        </div>
+                                        )
+                                        
+                                        : <div>
                                             <Button onClick={() => navigasi(`/update/produk/${id}`)} className="form-control mt-2" style={{
                                                 background: '#7126B5',
                                                 borderColor: '#7126B5',

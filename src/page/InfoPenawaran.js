@@ -70,7 +70,8 @@ export default function InfoPenawaran() {
     }
 
     console.log("tes", produk)
-
+    console.log("tes 2", coba)
+    
     const penawaranMasuk = () => {
         setPenawaranmu(false)
     }
@@ -100,7 +101,7 @@ export default function InfoPenawaran() {
                 console.log('uji stok', sisaStok)
                 if (sisaStok == 0){
                     response = await axios.put(`http://localhost:8000/v1/Produk/update/${id_produkTerjual}`, {
-                        keterangan: "out",
+                        keterangan: "disabled",
                         stok: sisaStok,
                         produkTerjual: jumlahProduk,
                     })
@@ -117,7 +118,7 @@ export default function InfoPenawaran() {
         } catch (error) {
             console.log(error)
         }
-        // window.location.reload();
+        window.location.reload();
     }
     const hubungi = () => {
         console.log("tes", nomor)
@@ -194,6 +195,8 @@ export default function InfoPenawaran() {
                 <div className='container-fluid p-4'>
                     <div className='row justify-content-md-center g-1'>
                         <div className='col-8'>
+                            {produk.length !== 0 ?
+                            <>
                             {produk.map((data, index) => {
                                 return (
                                     <div className='row justify-content-md-center g-1'>
@@ -519,21 +522,33 @@ export default function InfoPenawaran() {
                                                         }
                                                     </>
                                                 }
-
                                             </div>
                                         </div>
                                     </div>
                                 );
                             })}
+                            </>
+                            :
+                            <>
+                            <div>
+                                <h3 className='text-center py-4 mt-5'>Belum Ada Yang Mengajukan Penawaran</h3>
+                                <h5 className='text-center py-4'>Tetap Semangat Berjualan Wahai Pejuang Cuan</h5>
+                            </div>
+                            </>
+                            }
+
                         </div>
                     </div>
                 </div>
+
                 :
 
                 <div className='container-fluid p-4'>
                     <div className='row justify-content-md-center g-1'>
                         <div className='col-8'>
-                            {coba.map((data, index) => {
+                            {coba.length !== 0 ?
+                            <>
+                                {coba.map((data, index) => {
                                 { console.log("status", data.id_status) }
                                 return (
                                     <div className='row justify-content-md-center g-1'>
@@ -570,6 +585,16 @@ export default function InfoPenawaran() {
                                     </div>
                                 );
                             })}
+                            </>
+                            :
+                            <>
+                            <div>
+                                <h3 className='text-center py-4 mt-5'>Kamu Belum Mengajukan Penawaran</h3>
+                                <h5 className='text-center py-4'>Ayo Segera Cari Produk Impianmu</h5>
+                            </div>
+                            </>
+                            }
+
                         </div>
                     </div>
                 </div>
