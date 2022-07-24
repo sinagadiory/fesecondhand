@@ -75,6 +75,7 @@ export default function CardSeller() {
     const history = async (ket) => {
         console.log("tes masuk hist")
         const response = await axios.get(`https://secondhandkel4.herokuapp.com/api/v1/penjualan/${user.id}`)
+        setHist(response.data)
         console.log("coba fungsi", response.data)
         setJenis(ket)
     }
