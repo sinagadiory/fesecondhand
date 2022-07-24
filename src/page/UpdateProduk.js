@@ -119,9 +119,9 @@ export default function UpdateProduk() {
     function sleep(ms) {
         return new Promise(resolve => setTimeout(resolve, ms));
     }
-    // if (nama_produk === "" || deskripsi === "" || harga === "" || stok === "" || id_kategori === "Pilih Kategori") {
-    //     window.location.reload()
-    // }
+    if (nama_produk === "" || deskripsi === "" || harga === "" || stok === "" || id_kategori === "Pilih Kategori") {
+        window.location.reload()
+    }
 
     const updateProduct = async (e) => {
         e.preventDefault();
