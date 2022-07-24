@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import Nav from '../components/Nav'
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import jwt_decode from "jwt-decode"
 import { BsListUl, BsPerson } from 'react-icons/bs';
 import moment from "moment";
@@ -103,19 +103,20 @@ export default function Home() {
                     <button style={{ borderRadius: "15px", float: "right", color: "white" }} onClick={toggleShowA} className='btn btn-close'></button>
                     {dijual.length != 0 ? dijual.map((jual, index) => (
                         <div key={index}>
-                            <Toast.Header closeButton={false}>
-                                <img width={"50px"}
-                                    src={jual.foto}
-                                    className="rounded me-2"
-                                    alt=""
-                                />
-                                <h6 className="me-auto">{jual.nama_produk}</h6>
-                                <small>{moment(jual.createdAt).format('llll')}</small>
-                            </Toast.Header>
-                            <Toast.Body>
-                                <span>Harga {formatRupiah(jual.harga)}</span><br />
-                                <strong>Berhasil ditambahkan</strong>
-                            </Toast.Body>
+                            <Link to={"/daftarjual"} style={{ textDecoration: "none", color: "black" }}>
+                                <Toast.Header closeButton={false}>
+                                    <img width={"50px"}
+                                        src={jual.foto}
+                                        className="rounded me-2"
+                                        alt=""
+                                    />
+                                    <h6 className="me-auto">{jual.nama_produk}</h6>
+                                    <small>{moment(jual.createdAt).format('llll')}</small>
+                                </Toast.Header>
+                                <Toast.Body>
+                                    <span>Harga {formatRupiah(jual.harga)}</span><br />
+                                    <strong>Berhasil ditambahkan</strong>
+                                </Toast.Body></Link>
                         </div>
                     )) : <Toast.Header closeButton={false}>
                         <img width={"50px"}
@@ -131,23 +132,25 @@ export default function Home() {
                     <button style={{ borderRadius: "15px", float: "right", color: "white" }} onClick={toggleShowB} className='btn btn-close'></button>
                     {penawaranmasuk.length != 0 ? penawaranmasuk.map((masuk, index) => (
                         <div key={index}>
-                            <Toast.Header closeButton={false}>
-                                <img width={"50px"}
-                                    src={masuk.Product.foto}
-                                    className="rounded me-2"
-                                    alt=""
-                                />
-                                <strong className="me-auto">
-                                    {masuk.Product.nama_produk}
-                                </strong>
-                                <small>{moment(masuk.createdAt).format('llll')}</small>
-                            </Toast.Header>
-                            <Toast.Body>
-                                <b>{(masuk.User.nama)} (Pembeli)</b><br />
-                                <span>{formatRupiah(masuk.Product.harga)}</span><br />
-                                <span>Ditawar {formatRupiah(masuk.penawaranHarga)}</span><br />
-                                <strong style={{ textAlign: "center" }}>{masuk.Status.stat}</strong>
-                            </Toast.Body>
+                            <Link to={"/penawaran"} style={{ textDecoration: "none", color: "black" }}>
+                                <Toast.Header closeButton={false}>
+                                    <img width={"50px"}
+                                        src={masuk.Product.foto}
+                                        className="rounded me-2"
+                                        alt=""
+                                    />
+                                    <strong className="me-auto">
+                                        {masuk.Product.nama_produk}
+                                    </strong>
+                                    <small>{moment(masuk.createdAt).format('llll')}</small>
+                                </Toast.Header>
+                                <Toast.Body>
+                                    <b>{(masuk.User.nama)} (Pembeli)</b><br />
+                                    <span>{formatRupiah(masuk.Product.harga)}</span><br />
+                                    <span>Ditawar {formatRupiah(masuk.penawaranHarga)}</span><br />
+                                    <strong style={{ textAlign: "center" }}>{masuk.Status.stat}</strong>
+                                </Toast.Body>
+                            </Link>
                         </div>
                     )) : <Toast.Header closeButton={false}>
                         <img width={"50px"}
@@ -163,21 +166,23 @@ export default function Home() {
                     <button style={{ borderRadius: "15px", float: "right", color: "white" }} onClick={toggleShowC} className='btn btn-close'></button>
                     {penawarankeluar.length != 0 ? penawarankeluar.map((keluar, index) => (
                         <div key={index}>
-                            <Toast.Header closeButton={false}>
-                                <img width={"50px"}
-                                    src={keluar.Product.foto}
-                                    className="rounded me-2"
-                                    alt=""
-                                />
-                                <strong className="me-auto">{keluar.Product.nama_produk}</strong>
-                                <small>{moment(keluar.createdAt).format('llll')}</small>
-                            </Toast.Header>
-                            <Toast.Body>
-                                <b>{keluar.Product.User.nama} (Penjual)</b><br />
-                                <span>{formatRupiah(keluar.Product.harga)}</span><br />
-                                <span>Ditawar {formatRupiah(keluar.penawaranHarga)}</span><br />
-                                <strong style={{ textAlign: "center" }}>{keluar.id_status === 1 ? "Berhasil Terbeli" : (keluar.id_status === 4 ? "Ditolak" : keluar.Status.stat)}</strong>
-                            </Toast.Body>
+                            <Link to={"/penawaran"} style={{ textDecoration: "none", color: "black" }}>
+                                <Toast.Header closeButton={false}>
+                                    <img width={"50px"}
+                                        src={keluar.Product.foto}
+                                        className="rounded me-2"
+                                        alt=""
+                                    />
+                                    <strong className="me-auto">{keluar.Product.nama_produk}</strong>
+                                    <small>{moment(keluar.createdAt).format('llll')}</small>
+                                </Toast.Header>
+                                <Toast.Body>
+                                    <b>{keluar.Product.User.nama} (Penjual)</b><br />
+                                    <span>{formatRupiah(keluar.Product.harga)}</span><br />
+                                    <span>Ditawar {formatRupiah(keluar.penawaranHarga)}</span><br />
+                                    <strong style={{ textAlign: "center" }}>{keluar.id_status === 1 ? "Berhasil Terbeli" : (keluar.id_status === 4 ? "Ditolak" : keluar.Status.stat)}</strong>
+                                </Toast.Body>
+                            </Link>
                         </div>
                     )) : <Toast.Header closeButton={false}>
                         <img width={"50px"}
