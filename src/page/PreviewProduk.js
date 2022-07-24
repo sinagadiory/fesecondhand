@@ -36,29 +36,29 @@ export default function PreviewProduk() {
 
     const fetchdata = async () => {
         try {
-            let response = await axios.get("http://localhost:8000/token", {
+            let response = await axios.get("https://secondhandkel4.herokuapp.com/token", {
                 withCredentials: true
             })
             const decoded = jwt_decode(response.data.accessToken)
-            response = await fetch(`http://localhost:8000/user/${decoded.id}`)
+            response = await fetch(`https://secondhandkel4.herokuapp.com/user/${decoded.id}`)
             const iduser = decoded.id
             const data = await response.json()
             setUser(data)
-            response = await axios.get(`http://localhost:8000/v1/Produk/preview/${id}`)
+            response = await axios.get(`https://secondhandkel4.herokuapp.com/v1/Produk/preview/${id}`)
             setProduk(response.data)
             setKategori(response.data.Kategori)
             setPenjual(response.data.User)
             setProducts(response.data)
-            response = await axios.get(`http://localhost:8000/v1/penawaranBuyer/${decoded.id}`)
+            response = await axios.get(`https://secondhandkel4.herokuapp.com/v1/penawaranBuyer/${decoded.id}`)
             setCoba(response.data)
-            response = await axios.get(`http://localhost:8000/penawaranProduk/${id}`)
+            response = await axios.get(`https://secondhandkel4.herokuapp.com/penawaranProduk/${id}`)
             setCek(response.data)
             console.log("Cek", response.data);
             const orang = response.data
             const terakhir = orang.filter((user) => user.id_user == decoded.id).slice(-1)[0]
             console.log("terakhir", terakhir);
             setTerakhir((terakhir))
-            response = await axios.get(`http://localhost:8000/wishlist/${decoded.id}/${id}`)
+            response = await axios.get(`https://secondhandkel4.herokuapp.com/wishlist/${decoded.id}/${id}`)
             console.log("sukai", response.data);
             setWist(response.data)
         } catch (error) {
@@ -106,7 +106,7 @@ export default function PreviewProduk() {
                 gagal("Lengkapi Profil Terlebih Dahulu")
                 return
             }
-            await axios.post("http://localhost:8000/v1/penawaran/add", {
+            await axios.post("https://secondhandkel4.herokuapp.com/v1/penawaran/add", {
                 id_user: user.id,
                 id_produk: product.id,
                 id_penjual: penjual.id,
@@ -132,13 +132,13 @@ export default function PreviewProduk() {
 
     const wish = async () => {
         try {
-            let response = await axios.post(`http://localhost:8000/api/v1/wishlist/add`, {
+            let response = await axios.post(`https://secondhandkel4.herokuapp.com/api/v1/wishlist/add`, {
                 id_user: user.id,
                 id_produk: produk.id,
                 diminati: "yes"
             })
             console.log("add", response.data)
-            response = await axios.put(`http://localhost:8000/v1/Produk/update/${produk.id}`, {
+            response = await axios.put(`https://secondhandkel4.herokuapp.com/v1/Produk/update/${produk.id}`, {
                 disukai: produk.disukai + 1
             })
             console.log("+", response.data)
@@ -150,9 +150,9 @@ export default function PreviewProduk() {
 
     const hapusWish = async () => {
         try {
-            let response = await axios.delete(`http://localhost:8000/delete/${user.id}/${produk.id}`)
+            let response = await axios.delete(`https://secondhandkel4.herokuapp.com/delete/${user.id}/${produk.id}`)
             console.log("hapus", response.data)
-            response = await axios.put(`http://localhost:8000/v1/Produk/update/${produk.id}`, {
+            response = await axios.put(`https://secondhandkel4.herokuapp.com/v1/Produk/update/${produk.id}`, {
                 disukai: produk.disukai - 1
             })
             console.log("-", response.data)
@@ -194,200 +194,200 @@ export default function PreviewProduk() {
             <Nav content={content} content1={content1} contentUser={contentUser} />
             <div className='container-fluid p-4'>
                 <div className='row justify-content-md-center g-1'>
-                    {product.keterangan == "disabled"?
-                    <>
-                    <div className='col-lg-4'>
-                        <h2 style={{
-                            color:"red",
-                            textAlign:"center",
-                            marginTop:"50px"
-                        }}>Akses Dilarang</h2>
-                        <button onClick={() => back()} className="form-control mt-2 btn-outline-danger" style={{
-                                                    textAlign: "center",
-                                                    borderRadius: '16px',
-                                                    padding: '12px 16px',
-                                                }} >
-                                                    Kembali ke halaman utama
-                                                </button>
-                    </div>
-                    </>
-                    :
-                    <>
-                    <div className='col-lg-6'>
-                        <h4 className='text-center'>
-                            {msg}<span style={{ display: "block" }} className='mx-1'>
-                                {link == "" ? "" : <Link style={{ textDecoration: "none" }} to={"/infoprofil"}>Lengkapi</Link>}
-                            </span>
-                        </h4>
-                        <img className='p-4' src={product.foto} width="100%" />
-                        <div className={style.kanan}>
-                            <strong style={{ fontSize: "20px" }}>Deskripsi</strong><br />
-                            <p>{product.deskripsi}</p>
-                        </div>
-                    </div>
-                    <div className='col-lg-4'>
-                        <div className={style.kanan}>
-                            <strong style={{ fontSize: "22px" }}>{product.nama_produk}</strong><br />
-                            <small style={{ fontSize: "16px" }}>{kategori.macam}(Kategori)</small><br />
-                            <small style={{ fontSize: "15px" }}>{product.stok}(Jumlah Stok)</small>
-                            <strong className='mt-3 d-block'>{formatRupiah(product.harga)}</strong>
-                            <div className='row'>
-                                <div className='col-lg-12 col-12'>
-                                    {product.id_penjual !== user.id ?
-                                        ((Cek.filter((orang) => (orang.id_user === user.id)).map((user) => (user))).length !== 0 ? ((terakhir.id_status === 1 || terakhir.id_status === 4) ? 
-                                        <>
-                                        <Button className="form-control mt-2" data-bs-toggle="modal" data-bs-target="#staticBackdrop" style={{
-                                            background: '#7126B5',
-                                            borderColor: '#7126B5',
-                                            borderRadius: '16px',
-                                            padding: '12px 16px',
-                                        }}>
-                                            Saya Tertarik dan Ingin Nego
-                                        </Button>
-                                        {wist === null ? <button onClick={() => wish()} className="form-control mt-2" style={{
-                                                    textAlign: "center",
-                                                    background: '#FFFFFF',
-                                                    color: '#151515',
-                                                    borderColor: '#7126B5',
-                                                    borderRadius: '16px',
-                                                    padding: '12px 16px',
-                                                }}>
-                                                    Tambahkan ke Wishlist
-                                                </button> : <button onClick={() => hapusWish()} className="form-control mt-2 btn-outline-danger" style={{
-                                                    textAlign: "center",
-                                                    borderRadius: '16px',
-                                                    padding: '12px 16px',
-                                                }}>
-                                                    Hapus Wishlist
-                                                </button>}
-                                        </>
-                                            :
-                                            <Button type="button" style={{
-                                                background: '#D0D0D0',
-                                                borderColor: '#D0D0D0',
-                                                borderRadius: '16px',
-                                                padding: '12px 16px',
-                                            }} className="form-control mt-2" disabled data-bs-toggle="button">
-                                                {terakhir.id_status === 3 ? "Menunggu respon penjual" : "Negosiasi..."}
-                                            </Button>)
+                    {product.keterangan == "disabled" ?
+                        <>
+                            <div className='col-lg-4'>
+                                <h2 style={{
+                                    color: "red",
+                                    textAlign: "center",
+                                    marginTop: "50px"
+                                }}>Akses Dilarang</h2>
+                                <button onClick={() => back()} className="form-control mt-2 btn-outline-danger" style={{
+                                    textAlign: "center",
+                                    borderRadius: '16px',
+                                    padding: '12px 16px',
+                                }} >
+                                    Kembali ke halaman utama
+                                </button>
+                            </div>
+                        </>
+                        :
+                        <>
+                            <div className='col-lg-6'>
+                                <h4 className='text-center'>
+                                    {msg}<span style={{ display: "block" }} className='mx-1'>
+                                        {link == "" ? "" : <Link style={{ textDecoration: "none" }} to={"/infoprofil"}>Lengkapi</Link>}
+                                    </span>
+                                </h4>
+                                <img className='p-4' src={product.foto} width="100%" />
+                                <div className={style.kanan}>
+                                    <strong style={{ fontSize: "20px" }}>Deskripsi</strong><br />
+                                    <p>{product.deskripsi}</p>
+                                </div>
+                            </div>
+                            <div className='col-lg-4'>
+                                <div className={style.kanan}>
+                                    <strong style={{ fontSize: "22px" }}>{product.nama_produk}</strong><br />
+                                    <small style={{ fontSize: "16px" }}>{kategori.macam}(Kategori)</small><br />
+                                    <small style={{ fontSize: "15px" }}>{product.stok}(Jumlah Stok)</small>
+                                    <strong className='mt-3 d-block'>{formatRupiah(product.harga)}</strong>
+                                    <div className='row'>
+                                        <div className='col-lg-12 col-12'>
+                                            {product.id_penjual !== user.id ?
+                                                ((Cek.filter((orang) => (orang.id_user === user.id)).map((user) => (user))).length !== 0 ? ((terakhir.id_status === 1 || terakhir.id_status === 4) ?
+                                                    <>
+                                                        <Button className="form-control mt-2" data-bs-toggle="modal" data-bs-target="#staticBackdrop" style={{
+                                                            background: '#7126B5',
+                                                            borderColor: '#7126B5',
+                                                            borderRadius: '16px',
+                                                            padding: '12px 16px',
+                                                        }}>
+                                                            Saya Tertarik dan Ingin Nego
+                                                        </Button>
+                                                        {wist === null ? <button onClick={() => wish()} className="form-control mt-2" style={{
+                                                            textAlign: "center",
+                                                            background: '#FFFFFF',
+                                                            color: '#151515',
+                                                            borderColor: '#7126B5',
+                                                            borderRadius: '16px',
+                                                            padding: '12px 16px',
+                                                        }}>
+                                                            Tambahkan ke Wishlist
+                                                        </button> : <button onClick={() => hapusWish()} className="form-control mt-2 btn-outline-danger" style={{
+                                                            textAlign: "center",
+                                                            borderRadius: '16px',
+                                                            padding: '12px 16px',
+                                                        }}>
+                                                            Hapus Wishlist
+                                                        </button>}
+                                                    </>
+                                                    :
+                                                    <Button type="button" style={{
+                                                        background: '#D0D0D0',
+                                                        borderColor: '#D0D0D0',
+                                                        borderRadius: '16px',
+                                                        padding: '12px 16px',
+                                                    }} className="form-control mt-2" disabled data-bs-toggle="button">
+                                                        {terakhir.id_status === 3 ? "Menunggu respon penjual" : "Negosiasi..."}
+                                                    </Button>)
 
-                                            :
-                                            <div>
-                                                <Button className="form-control mt-2" data-bs-toggle="modal" data-bs-target="#staticBackdrop" style={{
-                                                    background: '#7126B5',
-                                                    borderColor: '#7126B5',
-                                                    borderRadius: '16px',
-                                                    padding: '12px 16px',
-                                                }}>
-                                                    Saya Tertarik dan Ingin Nego
-                                                </Button>
-                                                {wist === null ? <button onClick={() => wish()} className="form-control mt-2" style={{
-                                                    textAlign: "center",
-                                                    background: '#FFFFFF',
-                                                    color: '#151515',
-                                                    borderColor: '#7126B5',
-                                                    borderRadius: '16px',
-                                                    padding: '12px 16px',
-                                                }}>
-                                                    Tambahkan ke Wishlist
-                                                </button> : <button onClick={() => hapusWish()} className="form-control mt-2 btn-outline-danger" style={{
-                                                    textAlign: "center",
-                                                    borderRadius: '16px',
-                                                    padding: '12px 16px',
-                                                }}>
-                                                    Hapus Wishlist
-                                                </button>}
-                                            </div>
-                                        )
+                                                    :
+                                                    <div>
+                                                        <Button className="form-control mt-2" data-bs-toggle="modal" data-bs-target="#staticBackdrop" style={{
+                                                            background: '#7126B5',
+                                                            borderColor: '#7126B5',
+                                                            borderRadius: '16px',
+                                                            padding: '12px 16px',
+                                                        }}>
+                                                            Saya Tertarik dan Ingin Nego
+                                                        </Button>
+                                                        {wist === null ? <button onClick={() => wish()} className="form-control mt-2" style={{
+                                                            textAlign: "center",
+                                                            background: '#FFFFFF',
+                                                            color: '#151515',
+                                                            borderColor: '#7126B5',
+                                                            borderRadius: '16px',
+                                                            padding: '12px 16px',
+                                                        }}>
+                                                            Tambahkan ke Wishlist
+                                                        </button> : <button onClick={() => hapusWish()} className="form-control mt-2 btn-outline-danger" style={{
+                                                            textAlign: "center",
+                                                            borderRadius: '16px',
+                                                            padding: '12px 16px',
+                                                        }}>
+                                                            Hapus Wishlist
+                                                        </button>}
+                                                    </div>
+                                                )
 
-                                        : <div>
-                                            <Button onClick={() => navigasi(`/update/produk/${id}`)} className="form-control mt-2" style={{
-                                                background: '#7126B5',
-                                                borderColor: '#7126B5',
-                                                borderRadius: '16px',
-                                                padding: '12px 16px',
-                                            }}>
-                                                Update Produk
-                                            </Button>
-                                        </div>}
-                                    <div className="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                                        <div className="modal-dialog modal-dialog-centered">
-                                            <div className="modal-content">
-                                                <div className="modal-header">
-                                                    <h5 className="modal-title" id="staticBackdropLabel">Masukan Harga Tawaranmu</h5>
-                                                    <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                </div>
-                                                <div className="modal-body">
-                                                    <p>Harga tawaranmu akan diketahui penjual, jika penjual cocok kamu akan segera dihubungi penjual.</p>
-                                                    <div id={style.modal} style={{ display: "flex" }}>
-                                                        <div>
-                                                            {product.foto === null ? <img src={secondHand} className="rounded-circle mx-2" width="60px" height="60px" alt="userimage" /> : <img src={product.foto} className="rounded-circle mx-2" width="60px" height="60px" alt="userimage" />}
-                                                        </div>
-                                                        <div className="">
-                                                            <strong >{product.nama_produk}</strong>
-                                                            <h6>{formatRupiah(product.harga)} x {jumlah} <i>pcs</i> </h6>
-                                                            <h6>{formatRupiah((product.harga) * jumlah)} </h6>
-                                                        </div>
-                                                    </div>
-                                                    <div className='mt-3'>
-                                                        <strong>Jumlah</strong>
-                                                        <input type="number" max={product.stok} value={jumlah} onChange={(e) => setJumlah(e.target.value)} className='form-control' style={{
-                                                            border: "1px solid #D0D0D0",
-                                                            borderRadius: '16px',
-                                                            padding: '12px 16px',
-                                                        }} placeholder="pcs" />
-                                                    </div>
-                                                    <div className='mt-3'>
-                                                        <strong>Harga Tawar</strong>
-                                                        <CurrencyFormat value={penawaranharga} onChange={handleChange} style={{
-                                                            border: '1px solid #D0D0D0',
-                                                            borderRadius: '16px',
-                                                            padding: '12px 16px',
-                                                        }} className='form-control' displayType={'input'} thousandSeparator={'.'} decimalSeparator={','} prefix={'Rp'} placeholder="Rp 0.0" />
-                                                
-                                                    </div>
-                                                    <div className='mt-3'>
-                                                        <strong>keterangan</strong>
-                                                        <input value={keterangan} onChange={(e) => setKeterangan(e.target.value)} className='form-control' style={{
-                                                            border: "1px solid #D0D0D0",
-                                                            borderRadius: '16px',
-                                                            padding: '12px 16px',
-                                                        }} placeholder="Jika mau harga segini langsung ane bayar gan" />
-                                                    </div>
-                                                    <Button onClick={(e) => tawar(e)} className="form-control mt-2" style={{
+                                                : <div>
+                                                    <Button onClick={() => navigasi(`/update/produk/${id}`)} className="form-control mt-2" style={{
                                                         background: '#7126B5',
                                                         borderColor: '#7126B5',
                                                         borderRadius: '16px',
                                                         padding: '12px 16px',
                                                     }}>
-                                                        Kirim
+                                                        Update Produk
                                                     </Button>
+                                                </div>}
+                                            <div className="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                                <div className="modal-dialog modal-dialog-centered">
+                                                    <div className="modal-content">
+                                                        <div className="modal-header">
+                                                            <h5 className="modal-title" id="staticBackdropLabel">Masukan Harga Tawaranmu</h5>
+                                                            <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                        <div className="modal-body">
+                                                            <p>Harga tawaranmu akan diketahui penjual, jika penjual cocok kamu akan segera dihubungi penjual.</p>
+                                                            <div id={style.modal} style={{ display: "flex" }}>
+                                                                <div>
+                                                                    {product.foto === null ? <img src={secondHand} className="rounded-circle mx-2" width="60px" height="60px" alt="userimage" /> : <img src={product.foto} className="rounded-circle mx-2" width="60px" height="60px" alt="userimage" />}
+                                                                </div>
+                                                                <div className="">
+                                                                    <strong >{product.nama_produk}</strong>
+                                                                    <h6>{formatRupiah(product.harga)} x {jumlah} <i>pcs</i> </h6>
+                                                                    <h6>{formatRupiah((product.harga) * jumlah)} </h6>
+                                                                </div>
+                                                            </div>
+                                                            <div className='mt-3'>
+                                                                <strong>Jumlah</strong>
+                                                                <input type="number" max={product.stok} value={jumlah} onChange={(e) => setJumlah(e.target.value)} className='form-control' style={{
+                                                                    border: "1px solid #D0D0D0",
+                                                                    borderRadius: '16px',
+                                                                    padding: '12px 16px',
+                                                                }} placeholder="pcs" />
+                                                            </div>
+                                                            <div className='mt-3'>
+                                                                <strong>Harga Tawar</strong>
+                                                                <CurrencyFormat value={penawaranharga} onChange={handleChange} style={{
+                                                                    border: '1px solid #D0D0D0',
+                                                                    borderRadius: '16px',
+                                                                    padding: '12px 16px',
+                                                                }} className='form-control' displayType={'input'} thousandSeparator={'.'} decimalSeparator={','} prefix={'Rp'} placeholder="Rp 0.0" />
+
+                                                            </div>
+                                                            <div className='mt-3'>
+                                                                <strong>keterangan</strong>
+                                                                <input value={keterangan} onChange={(e) => setKeterangan(e.target.value)} className='form-control' style={{
+                                                                    border: "1px solid #D0D0D0",
+                                                                    borderRadius: '16px',
+                                                                    padding: '12px 16px',
+                                                                }} placeholder="Jika mau harga segini langsung ane bayar gan" />
+                                                            </div>
+                                                            <Button onClick={(e) => tawar(e)} className="form-control mt-2" style={{
+                                                                background: '#7126B5',
+                                                                borderColor: '#7126B5',
+                                                                borderRadius: '16px',
+                                                                padding: '12px 16px',
+                                                            }}>
+                                                                Kirim
+                                                            </Button>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
+                                            <Toaster
+                                                containerStyle={{
+                                                    top: 230,
+                                                    left: 20,
+                                                    bottom: 20,
+                                                    right: 20,
+                                                }}
+                                            />
                                         </div>
                                     </div>
-                                    <Toaster
-                                        containerStyle={{
-                                            top: 230,
-                                            left: 20,
-                                            bottom: 20,
-                                            right: 20,
-                                        }}
-                                    />
+                                </div>
+                                <div className={style.kanan} style={{ display: "flex" }}>
+                                    <div>
+                                        {penjual.image === null ? <img src={secondHand} className="rounded-circle mx-2" width="60px" height="60px" alt="userimage" /> : <img src={penjual.image} className="rounded-circle mx-2" width="60px" height="60px" alt="userimage" />}
+                                    </div>
+                                    <div>
+                                        <strong>{penjual.nama} (Penjual)</strong><br />
+                                        <p>{penjual.kota}</p>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div className={style.kanan} style={{ display: "flex" }}>
-                            <div>
-                                {penjual.image === null ? <img src={secondHand} className="rounded-circle mx-2" width="60px" height="60px" alt="userimage" /> : <img src={penjual.image} className="rounded-circle mx-2" width="60px" height="60px" alt="userimage" />}
-                            </div>
-                            <div>
-                                <strong>{penjual.nama} (Penjual)</strong><br />
-                                <p>{penjual.kota}</p>
-                            </div>
-                        </div>
-                    </div>
-                    </>
+                        </>
                     }
 
                 </div>

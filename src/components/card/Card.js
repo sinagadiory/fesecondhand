@@ -25,12 +25,12 @@ export default function CardProduk({ user }) {
     }, []);
 
     const getKategori = async () => {
-        let response = await axios.get("http://localhost:8000/v1/Produk/add/form")
+        let response = await axios.get("https://secondhandkel4.herokuapp.com/v1/Produk/add/form")
         setKategori(response.data)
     }
 
     const getProducts = async () => {
-        let response = await axios.get("http://localhost:8000/v1/Produk");
+        let response = await axios.get("https://secondhandkel4.herokuapp.com/v1/Produk");
         setProduct(response.data);
         setAngka(0)
     };
@@ -54,7 +54,7 @@ export default function CardProduk({ user }) {
     };
 
     const kategori = async (id) => {
-        let response = await axios.get(`http://localhost:8000/v1/Produk/kategori/${id}`);
+        let response = await axios.get(`https://secondhandkel4.herokuapp.com/v1/Produk/kategori/${id}`);
         let data = []
         data = data.push(response.data)
         console.log(data);

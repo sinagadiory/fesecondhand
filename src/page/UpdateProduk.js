@@ -49,17 +49,17 @@ export default function UpdateProduk() {
 
     const fetchdata = async () => {
         try {
-            let response = await axios.get("http://localhost:8000/token", {
+            let response = await axios.get("https://secondhandkel4.herokuapp.com/token", {
                 withCredentials: true
             })
             SetToken(response.data.accessToken)
             const decoded = jwt_decode(response.data.accessToken)
-            response = await fetch(`http://localhost:8000/user/${decoded.id}`)
+            response = await fetch(`https://secondhandkel4.herokuapp.com/user/${decoded.id}`)
             const data = await response.json()
             SetUser(data)
-            response = await axios.get("http://localhost:8000/v1/Produk/add/form")
+            response = await axios.get("https://secondhandkel4.herokuapp.com/v1/Produk/add/form")
             setKategori(response.data)
-            response = await axios.get(`http://localhost:8000/v1/Produk/preview/${id}`)
+            response = await axios.get(`https://secondhandkel4.herokuapp.com/v1/Produk/preview/${id}`)
             setProducts(response.data)
             setProduk(response.data)
             if (data.id != response.data.id_penjual) {
@@ -137,7 +137,7 @@ export default function UpdateProduk() {
                 return
             }
 
-            if(stok == 0 ){
+            if (stok == 0) {
                 setmsg("Lengkapi stok dengan benar!!")
                 SetLink(user.id)
                 gagal("Lengkapi stok dengan benar")
@@ -145,7 +145,7 @@ export default function UpdateProduk() {
             }
 
             if (file != null) {
-                let response = await axios.post("http://localhost:8000/v1/Produk/add/image/cloudinary",
+                let response = await axios.post("https://secondhandkel4.herokuapp.com/v1/Produk/add/image/cloudinary",
                     form,
                     {
                         headers: {
@@ -155,9 +155,9 @@ export default function UpdateProduk() {
 
                 );
                 SetFoto(response.data.url)
-                if(Products.stok == 0 && Products.keterangan == "disabled"){
+                if (Products.stok == 0 && Products.keterangan == "disabled") {
                     console.log("coba", Products.stok, "dan", Products.keterangan)
-                    response = await axios.put(`http://localhost:8000/v1/Produk/update/${id}`, {
+                    response = await axios.put(`https://secondhandkel4.herokuapp.com/v1/Produk/update/${id}`, {
                         id_penjual: id_penjual,
                         id_kategori: id_kategori,
                         nama_produk: nama_produk,
@@ -168,7 +168,7 @@ export default function UpdateProduk() {
                         keterangan: "sold"
                     })
                 } else {
-                    response = await axios.put(`http://localhost:8000/v1/Produk/update/${id}`, {
+                    response = await axios.put(`https://secondhandkel4.herokuapp.com/v1/Produk/update/${id}`, {
                         id_penjual: id_penjual,
                         id_kategori: id_kategori,
                         nama_produk: nama_produk,
@@ -178,25 +178,25 @@ export default function UpdateProduk() {
                         foto: response.data.url
                     })
                 }
-                // response = await axios.post("http://localhost:8000/v1/Produk/email")
+                // response = await axios.post("https://secondhandkel4.herokuapp.com/v1/Produk/email")
                 // navigasi("/home");
                 berhasil()
                 await sleep(3 * 1000)
                 navigasi(`/preview/produk/${id}`)
             } else {
-                if(Products.stok == 0 && Products.keterangan == "disabled"){
+                if (Products.stok == 0 && Products.keterangan == "disabled") {
                     console.log("coba", Products.stok, "dan", Products.keterangan)
-                await axios.put(`http://localhost:8000/v1/Produk/update/${id}`, {
-                    id_penjual: id_penjual,
-                    id_kategori: id_kategori,
-                    nama_produk: nama_produk,
-                    harga: harga,
-                    stok: stok,
-                    deskripsi: deskripsi,
-                    keterangan: "sold"
-                })
+                    await axios.put(`https://secondhandkel4.herokuapp.com/v1/Produk/update/${id}`, {
+                        id_penjual: id_penjual,
+                        id_kategori: id_kategori,
+                        nama_produk: nama_produk,
+                        harga: harga,
+                        stok: stok,
+                        deskripsi: deskripsi,
+                        keterangan: "sold"
+                    })
                 } else {
-                    await axios.put(`http://localhost:8000/v1/Produk/update/${id}`, {
+                    await axios.put(`https://secondhandkel4.herokuapp.com/v1/Produk/update/${id}`, {
                         id_penjual: id_penjual,
                         id_kategori: id_kategori,
                         nama_produk: nama_produk,
@@ -245,7 +245,7 @@ export default function UpdateProduk() {
                                     borderRadius: '16px',
                                     padding: '12px 16px',
                                 }} type="text" placeholder={Products.nama_produk} className="form-control" value={nama_produk} onChange={(e) => SetNama_produk(e.target.value)} />
-                                </Col>
+                            </Col>
                         </Form.Group> {console.log("nama_produk", nama_produk, stok, id_kategori)}
                         <Form.Group className="mb-3" >
                             <Col md="9" lg="7" sm="7" style={{ marginRight: " auto", marginLeft: " auto" }}>
