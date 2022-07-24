@@ -65,9 +65,6 @@ export default function DaftarJual() {
         <IoMdNotificationsOutline className="dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" style={{ width: "45px", height: "25px", cursor: "pointer" }} />
         <BsPerson style={{ width: "45px", height: "25px", cursor: "pointer" }} />
         <div class="dropdown">
-            {/* <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                Dropdown button
-            </button> */}
             <ul class="dropdown-menu">
                 <li><a class="dropdown-item" onClick={toggleShowA} href="#">Dijual</a></li>
                 <li><a class="dropdown-item" onClick={toggleShowB} href="#">PenawaranMasuk</a></li>

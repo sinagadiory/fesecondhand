@@ -4,13 +4,11 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import jwt_decode from "jwt-decode"
 import { BsListUl, BsPerson } from 'react-icons/bs';
-// import { ToastContainer, toast } from 'react-toastify';
 import moment from "moment";
 import Toast from 'react-bootstrap/Toast';
 import ToastContainer from 'react-bootstrap/ToastContainer';
 import 'react-toastify/dist/ReactToastify.css';
 import { IoMdNotificationsOutline } from "react-icons/io"
-// import ToastContainer from 'react-bootstrap/ToastContainer';
 import Card from '../components/card/Card';
 import Carousel from '../components/carousel';
 import secondHand from "../image/camera.png"
@@ -39,8 +37,6 @@ export default function Home() {
             SetUser(data)
             response = await axios.get(`https://secondhandkel4.herokuapp.com/v1/NotifUser/${decoded.id}`)
             setNotif(response.data)
-            console.log("notif", response.data);
-            // console.log("akhirnya", response.data);
             const dijual = (response.data).filter((dijual) => (dijual.kondisi === "dijual"))
             const penawaranmasuk = (response.data).filter((penawaranmasuk) => (penawaranmasuk.kondisi === "penawaranmasuk"))
             const penawarankeluar = (response.data).filter((penawaranmasuk) => (penawaranmasuk.kondisi === "penawarankeluar"))
@@ -90,9 +86,6 @@ export default function Home() {
         <BsPerson onClick={() => navigasi("/infoprofil")} style={{ width: "45px", height: "22px", cursor: "pointer" }} />
         <button onClick={Logout} className='btn btn-outline-danger'>Logout</button>
         <div class="dropdown">
-            {/* <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                Dropdown button
-            </button> */}
             <ul class="dropdown-menu">
                 <li><a class="dropdown-item" onClick={toggleShowA} href="#">Dijual</a></li>
                 <li><a class="dropdown-item" onClick={toggleShowB} href="#">PenawaranMasuk</a></li>
