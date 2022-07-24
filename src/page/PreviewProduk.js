@@ -62,7 +62,7 @@ export default function PreviewProduk() {
             console.log("sukai", response.data);
             setWist(response.data)
         } catch (error) {
-            navigasi("/")
+            navigasi("/login")
         }
     }
     const formatRupiah = (money) => {
