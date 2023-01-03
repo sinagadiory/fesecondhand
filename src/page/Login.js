@@ -26,7 +26,7 @@ export default function Login() {
     const login = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post("https://secondhandkel4.herokuapp.com/login", {
+            const response = await axios.post("https://secondhacktiv8-production.up.railway.app/login", {
                 email: email,
                 password: password,
             }, {
@@ -40,7 +40,7 @@ export default function Login() {
                 SetLink(data.email)
                 return
             }
-            await axios.get("https://secondhandkel4.herokuapp.com/user",
+            await axios.get("https://secondhacktiv8-production.up.railway.app/user",
                 {
                     headers: {
                         "Authorization": `Bearer ${data.accessToken}`

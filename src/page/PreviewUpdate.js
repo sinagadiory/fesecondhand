@@ -15,11 +15,11 @@ export default function PreviewUpdate({ foto, prew, updateProduct, deskripsi, na
 
     const fetchdata = async () => {
         try {
-            let response = await axios.get("https://secondhandkel4.herokuapp.com/token", {
+            let response = await axios.get("https://secondhacktiv8-production.up.railway.app/token", {
                 withCredentials: true
             })
             const decoded = jwt_decode(response.data.accessToken)
-            response = await fetch(`https://secondhandkel4.herokuapp.com/user/${decoded.id}`)
+            response = await fetch(`https://secondhacktiv8-production.up.railway.app/user/${decoded.id}`)
             const data = await response.json()
             SetUser(data)
         } catch (error) {

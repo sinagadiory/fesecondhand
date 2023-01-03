@@ -55,15 +55,15 @@ export default function InfoProduk() {
 
     const fetchdata = async () => {
         try {
-            let response = await axios.get("https://secondhandkel4.herokuapp.com/token", {
+            let response = await axios.get("https://secondhacktiv8-production.up.railway.app/token", {
                 withCredentials: true
             })
             SetToken(response.data.accessToken)
             const decoded = jwt_decode(response.data.accessToken)
-            response = await fetch(`https://secondhandkel4.herokuapp.com/user/${decoded.id}`)
+            response = await fetch(`https://secondhacktiv8-production.up.railway.app/user/${decoded.id}`)
             const data = await response.json()
             SetUser(data)
-            response = await axios.get("https://secondhandkel4.herokuapp.com/v1/Produk/add/form")
+            response = await axios.get("https://secondhacktiv8-production.up.railway.app/v1/Produk/add/form")
             setKategori(response.data)
             // console.log(response.data)
         } catch (error) {
@@ -109,7 +109,7 @@ export default function InfoProduk() {
             }
 
             if (file != null) {
-                let response = await axios.post("https://secondhandkel4.herokuapp.com/v1/Produk/add/image/cloudinary",
+                let response = await axios.post("https://secondhacktiv8-production.up.railway.app/v1/Produk/add/image/cloudinary",
                     form,
                     {
                         headers: {
@@ -119,7 +119,7 @@ export default function InfoProduk() {
 
                 );
                 SetFoto(response.data.url)
-                response = await axios.post("https://secondhandkel4.herokuapp.com/v1/Produk/add", {
+                response = await axios.post("https://secondhacktiv8-production.up.railway.app/v1/Produk/add", {
                     id_penjual: user.id,
                     id_kategori: id_kategori,
                     nama_produk: nama_produk,
@@ -130,13 +130,13 @@ export default function InfoProduk() {
                     produkTerjual: produkTerjual,
                     disukai: disukai
                 })
-                await axios.post("https://secondhandkel4.herokuapp.com/v1/Produk/email")
+                await axios.post("https://secondhacktiv8-production.up.railway.app/v1/Produk/email")
                 berhasil()
                 await sleep(2 * 1000)
                 navigasi("/home")
                 // navigasi("/home");npm ru
             } else {
-                await axios.post("https://secondhandkel4.herokuapp.com/v1/Produk/add", {
+                await axios.post("https://secondhacktiv8-production.up.railway.app/v1/Produk/add", {
                     id_penjual: user.id,
                     id_kategori: id_kategori,
                     nama_produk: nama_produk,

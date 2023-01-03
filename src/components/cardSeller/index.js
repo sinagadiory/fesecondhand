@@ -29,14 +29,14 @@ export default function CardSeller() {
 
     const fetchdata = async () => {
         try {
-            let response = await axios.get("https://secondhandkel4.herokuapp.com/token", {
+            let response = await axios.get("https://secondhacktiv8-production.up.railway.app/token", {
                 withCredentials: true
             })
             const decoded = jwt_decode(response.data.accessToken)
-            response = await fetch(`https://secondhandkel4.herokuapp.com/user/${decoded.id}`)
+            response = await fetch(`https://secondhacktiv8-production.up.railway.app/user/${decoded.id}`)
             const data = await response.json()
             SetUser(data)
-            response = await axios.get(`https://secondhandkel4.herokuapp.com/v1/Produk/${decoded.id}`)
+            response = await axios.get(`https://secondhacktiv8-production.up.railway.app/v1/Produk/${decoded.id}`)
             setProducts(response.data);
             console.log(response.data)
         } catch (error) {
@@ -44,7 +44,7 @@ export default function CardSeller() {
         }
     }
     const ada = async () => {
-        await fetch(`https://secondhandkel4.herokuapp.com/user/${user.id}`)
+        await fetch(`https://secondhacktiv8-production.up.railway.app/user/${user.id}`)
     }
     useEffect(() => {
         if (!ada) {
@@ -66,7 +66,7 @@ export default function CardSeller() {
 
     const pilih = async (ket) => {
         console.log("liat ket", ket)
-        const response = await axios.get(`https://secondhandkel4.herokuapp.com/v1/Produk/${user.id}/${ket}`)
+        const response = await axios.get(`https://secondhacktiv8-production.up.railway.app/v1/Produk/${user.id}/${ket}`)
         console.log("coba fungsi", response.data)
         setMacam(response.data)
         setJenis(ket)
@@ -74,7 +74,7 @@ export default function CardSeller() {
 
     const history = async (ket) => {
         console.log("tes masuk hist")
-        const response = await axios.get(`https://secondhandkel4.herokuapp.com/api/v1/penjualan/${user.id}`)
+        const response = await axios.get(`https://secondhacktiv8-production.up.railway.app/api/v1/penjualan/${user.id}`)
         setHist(response.data)
         console.log("coba fungsi", response.data)
         setJenis(ket)
@@ -82,7 +82,7 @@ export default function CardSeller() {
 
     const wishlist = async (ket) => {
         console.log("tes masuk wish")
-        const response = await axios.get(`https://secondhandkel4.herokuapp.com/api/v1/wishlist/buyer/${user.id}`)
+        const response = await axios.get(`https://secondhacktiv8-production.up.railway.app/api/v1/wishlist/buyer/${user.id}`)
         console.log("coba fungsi", response.data)
         setWish(response.data)
         setJenis(ket)
@@ -90,7 +90,7 @@ export default function CardSeller() {
 
     const historyPembelian = async (ket) => {
         console.log("tes masuk hist")
-        const response = await axios.get(`https://secondhandkel4.herokuapp.com/api/v1/pembelian/${user.id}`)
+        const response = await axios.get(`https://secondhacktiv8-production.up.railway.app/api/v1/pembelian/${user.id}`)
         console.log("coba fungsi", response.data)
         setHistPem(response.data)
         setJenis(ket)
@@ -98,9 +98,9 @@ export default function CardSeller() {
 
     const hapusWish = async () => {
         try {
-            let response = await axios.delete(`https://secondhandkel4.herokuapp.com/delete/${user.id}/${id_produk}`)
+            let response = await axios.delete(`https://secondhacktiv8-production.up.railway.app/delete/${user.id}/${id_produk}`)
             console.log("hapus", response.data)
-            response = await axios.put(`https://secondhandkel4.herokuapp.com/v1/Produk/update/${id_produk}`, {
+            response = await axios.put(`https://secondhacktiv8-production.up.railway.app/v1/Produk/update/${id_produk}`, {
                 disukai: produkDisukai - 1
             })
             console.log("-", response.data)

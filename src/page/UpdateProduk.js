@@ -49,17 +49,17 @@ export default function UpdateProduk() {
 
     const fetchdata = async () => {
         try {
-            let response = await axios.get("https://secondhandkel4.herokuapp.com/token", {
+            let response = await axios.get("https://secondhacktiv8-production.up.railway.app/token", {
                 withCredentials: true
             })
             SetToken(response.data.accessToken)
             const decoded = jwt_decode(response.data.accessToken)
-            response = await fetch(`https://secondhandkel4.herokuapp.com/user/${decoded.id}`)
+            response = await fetch(`https://secondhacktiv8-production.up.railway.app/user/${decoded.id}`)
             const data = await response.json()
             SetUser(data)
-            response = await axios.get("https://secondhandkel4.herokuapp.com/v1/Produk/add/form")
+            response = await axios.get("https://secondhacktiv8-production.up.railway.app/v1/Produk/add/form")
             setKategori(response.data)
-            response = await axios.get(`https://secondhandkel4.herokuapp.com/v1/Produk/preview/${id}`)
+            response = await axios.get(`https://secondhacktiv8-production.up.railway.app/v1/Produk/preview/${id}`)
             setProducts(response.data)
             setProduk(response.data)
             if (data.id != response.data.id_penjual) {
@@ -145,7 +145,7 @@ export default function UpdateProduk() {
             }
 
             if (file != null) {
-                let response = await axios.post("https://secondhandkel4.herokuapp.com/v1/Produk/add/image/cloudinary",
+                let response = await axios.post("https://secondhacktiv8-production.up.railway.app/v1/Produk/add/image/cloudinary",
                     form,
                     {
                         headers: {
@@ -157,7 +157,7 @@ export default function UpdateProduk() {
                 SetFoto(response.data.url)
                 if (Products.stok == 0 && Products.keterangan == "disabled") {
                     console.log("coba", Products.stok, "dan", Products.keterangan)
-                    response = await axios.put(`https://secondhandkel4.herokuapp.com/v1/Produk/update/${id}`, {
+                    response = await axios.put(`https://secondhacktiv8-production.up.railway.app/v1/Produk/update/${id}`, {
                         id_penjual: id_penjual,
                         id_kategori: id_kategori,
                         nama_produk: nama_produk,
@@ -168,7 +168,7 @@ export default function UpdateProduk() {
                         keterangan: "sold"
                     })
                 } else {
-                    response = await axios.put(`https://secondhandkel4.herokuapp.com/v1/Produk/update/${id}`, {
+                    response = await axios.put(`https://secondhacktiv8-production.up.railway.app/v1/Produk/update/${id}`, {
                         id_penjual: id_penjual,
                         id_kategori: id_kategori,
                         nama_produk: nama_produk,
@@ -178,7 +178,7 @@ export default function UpdateProduk() {
                         foto: response.data.url
                     })
                 }
-                // response = await axios.post("https://secondhandkel4.herokuapp.com/v1/Produk/email")
+                // response = await axios.post("https://secondhacktiv8-production.up.railway.app/v1/Produk/email")
                 // navigasi("/home");
                 berhasil()
                 await sleep(3 * 1000)
@@ -186,7 +186,7 @@ export default function UpdateProduk() {
             } else {
                 if (Products.stok == 0 && Products.keterangan == "disabled") {
                     console.log("coba", Products.stok, "dan", Products.keterangan)
-                    await axios.put(`https://secondhandkel4.herokuapp.com/v1/Produk/update/${id}`, {
+                    await axios.put(`https://secondhacktiv8-production.up.railway.app/v1/Produk/update/${id}`, {
                         id_penjual: id_penjual,
                         id_kategori: id_kategori,
                         nama_produk: nama_produk,
@@ -196,7 +196,7 @@ export default function UpdateProduk() {
                         keterangan: "sold"
                     })
                 } else {
-                    await axios.put(`https://secondhandkel4.herokuapp.com/v1/Produk/update/${id}`, {
+                    await axios.put(`https://secondhacktiv8-production.up.railway.app/v1/Produk/update/${id}`, {
                         id_penjual: id_penjual,
                         id_kategori: id_kategori,
                         nama_produk: nama_produk,

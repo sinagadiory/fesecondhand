@@ -14,7 +14,7 @@ export default function Konfirmasi() {
     const [pesan, SetPesan] = useState("")
     const [OTP, SetOTP] = useState("")
     const fetchdata = async () => {
-        const response = await fetch(`https://secondhandkel4.herokuapp.com/usernama/${email}`)
+        const response = await fetch(`https://secondhacktiv8-production.up.railway.app/usernama/${email}`)
         const data = await response.json()
         SetUser(data)
         if (data.verifikasi === "1") {
@@ -31,7 +31,7 @@ export default function Konfirmasi() {
             SetPesan("OTP Salah")
             return
         }
-        await axios.put(`https://secondhandkel4.herokuapp.com/update/${user.id}`, {
+        await axios.put(`https://secondhacktiv8-production.up.railway.app/update/${user.id}`, {
             verifikasi: "1"
         })
         setShow(false)

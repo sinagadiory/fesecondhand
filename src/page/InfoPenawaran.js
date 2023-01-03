@@ -38,19 +38,19 @@ export default function InfoPenawaran() {
 
     const fetchdata = async () => {
         try {
-            let response = await axios.get("https://secondhandkel4.herokuapp.com/token", {
+            let response = await axios.get("https://secondhacktiv8-production.up.railway.app/token", {
                 withCredentials: true
             })
             SetToken(response.data.accessToken)
             const decoded = jwt_decode(response.data.accessToken)
-            response = await fetch(`https://secondhandkel4.herokuapp.com/user/${decoded.id}`)
+            response = await fetch(`https://secondhacktiv8-production.up.railway.app/user/${decoded.id}`)
             const data = await response.json()
             SetUser(data)
-            response = await axios.get("https://secondhandkel4.herokuapp.com/v1/Produk/add/form")
+            response = await axios.get("https://secondhacktiv8-production.up.railway.app/v1/Produk/add/form")
             setKategori(response.data)
-            response = await axios.get(`https://secondhandkel4.herokuapp.com/v1/penawaran/${decoded.id}`)
+            response = await axios.get(`https://secondhacktiv8-production.up.railway.app/v1/penawaran/${decoded.id}`)
             setProduk(response.data)
-            response = await axios.get(`https://secondhandkel4.herokuapp.com/v1/penawaranBuyer/${decoded.id}`)
+            response = await axios.get(`https://secondhacktiv8-production.up.railway.app/v1/penawaranBuyer/${decoded.id}`)
             setCoba(response.data)
         } catch (error) {
             navigasi("/")
@@ -71,12 +71,12 @@ export default function InfoPenawaran() {
         console.log("tes", status)
         console.log("tes2", id_penawaran)
         try {
-            let response = await axios.put(`https://secondhandkel4.herokuapp.com/v1/penawaran/update/${id_penawaran}`, {
+            let response = await axios.put(`https://secondhacktiv8-production.up.railway.app/v1/penawaran/update/${id_penawaran}`, {
                 id_status: status,
             })
             console.log('uji', response.data)
             if (status == 1) {
-                response = await axios.post(`https://secondhandkel4.herokuapp.com/api/v1/penjualan`, {
+                response = await axios.post(`https://secondhacktiv8-production.up.railway.app/api/v1/penjualan`, {
                     id_pembeli: id_pembeli,
                     id_penjual: id_penjual,
                     id_status: status,
@@ -89,14 +89,14 @@ export default function InfoPenawaran() {
                 const sisaStok = stok - jumlahProduk
                 console.log('uji stok', sisaStok)
                 if (sisaStok == 0) {
-                    response = await axios.put(`https://secondhandkel4.herokuapp.com/v1/Produk/update/${id_produkTerjual}`, {
+                    response = await axios.put(`https://secondhacktiv8-production.up.railway.app/v1/Produk/update/${id_produkTerjual}`, {
                         keterangan: "disabled",
                         stok: sisaStok,
                         produkTerjual: jumlahProduk,
                     })
                     console.log('uji 3', response.data)
                 } else {
-                    response = await axios.put(`https://secondhandkel4.herokuapp.com/v1/Produk/update/${id_produkTerjual}`, {
+                    response = await axios.put(`https://secondhacktiv8-production.up.railway.app/v1/Produk/update/${id_produkTerjual}`, {
                         keterangan: "sold",
                         stok: sisaStok,
                         produkTerjual: jumlahProduk,
@@ -136,7 +136,7 @@ export default function InfoPenawaran() {
             let hasilCek = nomor.substring(1);
             console.log("cek no2", hasilCek)
             try {
-                let response = await axios.put(`https://secondhandkel4.herokuapp.com/v1/penawaran/update/${id_penawaran}`, {
+                let response = await axios.put(`https://secondhacktiv8-production.up.railway.app/v1/penawaran/update/${id_penawaran}`, {
                     id_status: "2",
                 })
                 console.log('uji', response.data)
@@ -147,7 +147,7 @@ export default function InfoPenawaran() {
             window.location.reload();
         } else if (cekNomor1 == 62) {
             try {
-                let response = await axios.put(`https://secondhandkel4.herokuapp.com/v1/penawaran/update/${id_penawaran}`, {
+                let response = await axios.put(`https://secondhacktiv8-production.up.railway.app/v1/penawaran/update/${id_penawaran}`, {
                     id_status: "2",
                 })
                 console.log('uji', response.data)

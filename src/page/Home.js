@@ -28,14 +28,14 @@ export default function Home() {
 
     const fetchdata = async () => {
         try {
-            let response = await axios.get("https://secondhandkel4.herokuapp.com/token", {
+            let response = await axios.get("https://secondhacktiv8-production.up.railway.app/token", {
                 withCredentials: true
             })
             const decoded = jwt_decode(response.data.accessToken)
-            response = await fetch(`https://secondhandkel4.herokuapp.com/user/${decoded.id}`)
+            response = await fetch(`https://secondhacktiv8-production.up.railway.app/user/${decoded.id}`)
             const data = await response.json()
             SetUser(data)
-            response = await axios.get(`https://secondhandkel4.herokuapp.com/v1/NotifUser/${decoded.id}`)
+            response = await axios.get(`https://secondhacktiv8-production.up.railway.app/v1/NotifUser/${decoded.id}`)
             setNotif(response.data)
             const dijual = (response.data).filter((dijual) => (dijual.kondisi === "dijual"))
             const penawaranmasuk = (response.data).filter((penawaranmasuk) => (penawaranmasuk.kondisi === "penawaranmasuk"))
@@ -73,7 +73,7 @@ export default function Home() {
     const toggleShowC = () => setShowC(!showC);
     const Logout = async (e) => {
         e.preventDefault()
-        await axios.delete("https://secondhandkel4.herokuapp.com/logout", {
+        await axios.delete("https://secondhacktiv8-production.up.railway.app/logout", {
             withCredentials: true
         })
         navigasi("/")

@@ -30,7 +30,7 @@ export default function Register() {
     const register = async (e) => {
         e.preventDefault();
         try {
-            await axios.post("https://secondhandkel4.herokuapp.com/register", {
+            await axios.post("https://secondhacktiv8-production.up.railway.app/register", {
                 nama: nama,
                 email: email,
                 password: password,

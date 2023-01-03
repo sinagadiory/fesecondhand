@@ -36,29 +36,29 @@ export default function PreviewProduk() {
 
     const fetchdata = async () => {
         try {
-            let response = await axios.get("https://secondhandkel4.herokuapp.com/token", {
+            let response = await axios.get("https://secondhacktiv8-production.up.railway.app/token", {
                 withCredentials: true
             })
             const decoded = jwt_decode(response.data.accessToken)
-            response = await fetch(`https://secondhandkel4.herokuapp.com/user/${decoded.id}`)
+            response = await fetch(`https://secondhacktiv8-production.up.railway.app/user/${decoded.id}`)
             const iduser = decoded.id
             const data = await response.json()
             setUser(data)
-            response = await axios.get(`https://secondhandkel4.herokuapp.com/v1/Produk/preview/${id}`)
+            response = await axios.get(`https://secondhacktiv8-production.up.railway.app/v1/Produk/preview/${id}`)
             setProduk(response.data)
             setKategori(response.data.Kategori)
             setPenjual(response.data.User)
             setProducts(response.data)
-            response = await axios.get(`https://secondhandkel4.herokuapp.com/v1/penawaranBuyer/${decoded.id}`)
+            response = await axios.get(`https://secondhacktiv8-production.up.railway.app/v1/penawaranBuyer/${decoded.id}`)
             setCoba(response.data)
-            response = await axios.get(`https://secondhandkel4.herokuapp.com/penawaranProduk/${id}`)
+            response = await axios.get(`https://secondhacktiv8-production.up.railway.app/penawaranProduk/${id}`)
             setCek(response.data)
             console.log("Cek", response.data);
             const orang = response.data
             const terakhir = orang.filter((user) => user.id_user == decoded.id).slice(-1)[0]
             console.log("terakhir", terakhir);
             setTerakhir((terakhir))
-            response = await axios.get(`https://secondhandkel4.herokuapp.com/wishlist/${decoded.id}/${id}`)
+            response = await axios.get(`https://secondhacktiv8-production.up.railway.app/wishlist/${decoded.id}/${id}`)
             console.log("sukai", response.data);
             setWist(response.data)
         } catch (error) {
@@ -106,7 +106,7 @@ export default function PreviewProduk() {
                 gagal("Lengkapi Profil Terlebih Dahulu")
                 return
             }
-            await axios.post("https://secondhandkel4.herokuapp.com/v1/penawaran/add", {
+            await axios.post("https://secondhacktiv8-production.up.railway.app/v1/penawaran/add", {
                 id_user: user.id,
                 id_produk: product.id,
                 id_penjual: penjual.id,
@@ -131,13 +131,13 @@ export default function PreviewProduk() {
 
     const wish = async () => {
         try {
-            let response = await axios.post(`https://secondhandkel4.herokuapp.com/api/v1/wishlist/add`, {
+            let response = await axios.post(`https://secondhacktiv8-production.up.railway.app/api/v1/wishlist/add`, {
                 id_user: user.id,
                 id_produk: produk.id,
                 diminati: "yes"
             })
             console.log("add", response.data)
-            response = await axios.put(`https://secondhandkel4.herokuapp.com/v1/Produk/update/${produk.id}`, {
+            response = await axios.put(`https://secondhacktiv8-production.up.railway.app/v1/Produk/update/${produk.id}`, {
                 disukai: produk.disukai + 1
             })
             console.log("+", response.data)
@@ -149,9 +149,9 @@ export default function PreviewProduk() {
 
     const hapusWish = async () => {
         try {
-            let response = await axios.delete(`https://secondhandkel4.herokuapp.com/delete/${user.id}/${produk.id}`)
+            let response = await axios.delete(`https://secondhacktiv8-production.up.railway.app/delete/${user.id}/${produk.id}`)
             console.log("hapus", response.data)
-            response = await axios.put(`https://secondhandkel4.herokuapp.com/v1/Produk/update/${produk.id}`, {
+            response = await axios.put(`https://secondhacktiv8-production.up.railway.app/v1/Produk/update/${produk.id}`, {
                 disukai: produk.disukai - 1
             })
             console.log("-", response.data)
